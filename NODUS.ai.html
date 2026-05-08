@@ -909,145 +909,10 @@
       </footer>
     );
 
-    // ─── TWEAKS PANEL ─────────────────────────────────────────────────────────
-    const TweaksPanel = ({ tweaks, setTweak, onClose }) => {
-      const mono = "'Space Mono',monospace";
-      const grotesk = "'Space Grotesk',sans-serif";
-      const labelStyle = { fontSize: '9px', color: tweaks.accentColor || '#00D4FF', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '10px', fontFamily: mono, display: 'block' };
-      const sectionStyle = { marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid rgba(255,255,255,0.06)' };
-
-      const Chip = ({ label, active, onClick }) => (
-        <button onClick={onClick} style={{ padding: '6px 13px', borderRadius: '6px', border: active ? `1px solid ${tweaks.accentColor || '#00D4FF'}55` : '1px solid rgba(255,255,255,0.08)', background: active ? `${tweaks.accentColor || '#00D4FF'}14` : 'rgba(255,255,255,0.03)', color: active ? (tweaks.accentColor || '#00D4FF') : 'rgba(255,255,255,0.45)', fontSize: '11px', fontFamily: grotesk, cursor: 'pointer', transition: 'all 0.18s' }}>
-          {label}
-        </button>
-      );
-
-      const Toggle = ({ label, value, onChange }) => (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-          <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.55)', fontFamily: grotesk }}>{label}</span>
-          <button onClick={() => onChange(!value)} style={{ width: '36px', height: '20px', borderRadius: '10px', background: value ? (tweaks.accentColor || '#00D4FF') : 'rgba(255,255,255,0.12)', border: 'none', cursor: 'pointer', position: 'relative', transition: 'background 0.2s', flexShrink: 0 }}>
-            <span style={{ position: 'absolute', top: '3px', left: value ? '19px' : '3px', width: '14px', height: '14px', borderRadius: '50%', background: value ? '#06060F' : 'rgba(255,255,255,0.6)', transition: 'left 0.2s', display: 'block' }} />
-          </button>
-        </div>
-      );
-
-      const Slider = ({ label, min, max, step, value, onChange, format }) => (
-        <div style={{ marginBottom: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '7px' }}>
-            <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)', fontFamily: grotesk }}>{label}</span>
-            <span style={{ fontSize: '11px', color: tweaks.accentColor || '#00D4FF', fontFamily: mono }}>{format ? format(value) : value}</span>
-          </div>
-          <input type="range" min={min} max={max} step={step} value={value}
-            onChange={e => onChange(parseFloat(e.target.value))}
-            style={{ width: '100%', accentColor: tweaks.accentColor || '#00D4FF', height: '3px', cursor: 'pointer' }} />
-        </div>
-      );
-
-      const headlines = ["Automate the\nImpossible.", "Intelligence,\nEngineered.", "The Future Runs\non NODUS.", "Where Complexity\nMeets Clarity.", "Your Operations,\nReimagined."];
-      const colors = [['#00D4FF','Cyan'],['#7B5CE6','Purple'],['#4DFFA0','Mint'],['#FF4D6D','Red'],['#FFB830','Amber'],['#FF6B35','Coral']];
-
-      return (
-        <div style={{ position: 'fixed', bottom: '24px', right: '24px', zIndex: 9999, width: '320px', maxHeight: '88vh', background: 'rgba(7,7,20,0.97)', backdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', fontFamily: grotesk, boxShadow: '0 32px 80px rgba(0,0,0,0.7)', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid rgba(255,255,255,0.07)', flexShrink: 0 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: tweaks.accentColor || '#00D4FF' }} />
-              <span style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.65)' }}>Tweaks</span>
-            </div>
-            <button onClick={onClose} style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', color: 'rgba(255,255,255,0.45)', cursor: 'pointer', fontSize: '13px', padding: '3px 9px', lineHeight: 1.4 }}>✕</button>
-          </div>
-
-          <div style={{ overflowY: 'auto', padding: '18px 20px', flex: 1 }}>
-            <div style={sectionStyle}>
-              <span style={labelStyle}>Hero Headline</span>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                {headlines.map((h, i) => {
-                  const sel = tweaks.headline === h;
-                  return (
-                    <button key={i} onClick={() => setTweak('headline', h)} style={{ textAlign: 'left', background: sel ? `${tweaks.accentColor || '#00D4FF'}12` : 'rgba(255,255,255,0.03)', border: sel ? `1px solid ${tweaks.accentColor || '#00D4FF'}40` : '1px solid rgba(255,255,255,0.07)', borderRadius: '8px', padding: '9px 12px', cursor: 'pointer', color: sel ? (tweaks.accentColor || '#00D4FF') : 'rgba(255,255,255,0.5)', fontSize: '12px', fontFamily: grotesk, lineHeight: 1.5, transition: 'all 0.18s' }}>
-                      {h.replace('\n', ' · ')}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div style={sectionStyle}>
-              <span style={labelStyle}>Hero Options</span>
-              <Toggle label="Show hero subtitle" value={tweaks.heroSubtext} onChange={v => setTweak('heroSubtext', v)} />
-              <Slider label="Video overlay darkness" min={0.3} max={0.95} step={0.05} value={tweaks.overlayStrength} onChange={v => setTweak('overlayStrength', v)} format={v => Math.round(v * 100) + '%'} />
-            </div>
-
-            <div style={sectionStyle}>
-              <span style={labelStyle}>Accent Colour</span>
-              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
-                {colors.map(([color, name]) => (
-                  <button key={color} onClick={() => setTweak('accentColor', color)} title={name} style={{ width: '30px', height: '30px', borderRadius: '50%', background: color, border: tweaks.accentColor === color ? '2px solid white' : '2px solid rgba(255,255,255,0.15)', cursor: 'pointer', transition: 'border 0.15s', position: 'relative' }}>
-                    {tweaks.accentColor === color && <span style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', color: '#06060F' }}>✓</span>}
-                  </button>
-                ))}
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <input type="color" value={tweaks.accentColor} onChange={e => setTweak('accentColor', e.target.value)} style={{ width: '32px', height: '32px', border: 'none', borderRadius: '6px', cursor: 'pointer', background: 'none', padding: 0 }} />
-                <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.35)', fontFamily: "'Space Mono',monospace" }}>{tweaks.accentColor}</span>
-              </div>
-            </div>
-
-            <div style={sectionStyle}>
-              <span style={labelStyle}>Button Style</span>
-              <div style={{ marginBottom: '14px' }}>
-                <Slider label="Corner radius" min={0} max={40} step={2} value={tweaks.btnRadius} onChange={v => setTweak('btnRadius', v)} format={v => v + 'px'} />
-              </div>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <Chip label="Sharp" active={tweaks.btnRadius === 0} onClick={() => setTweak('btnRadius', 0)} />
-                <Chip label="Rounded" active={tweaks.btnRadius === 8} onClick={() => setTweak('btnRadius', 8)} />
-                <Chip label="Pill" active={tweaks.btnRadius === 40} onClick={() => setTweak('btnRadius', 40)} />
-              </div>
-            </div>
-
-            <div style={sectionStyle}>
-              <span style={labelStyle}>Animation Speed</span>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                {['slow', 'normal', 'fast'].map(s => (
-                  <Chip key={s} label={s.charAt(0).toUpperCase() + s.slice(1)} active={tweaks.animSpeed === s} onClick={() => setTweak('animSpeed', s)} />
-                ))}
-              </div>
-            </div>
-
-            <div style={sectionStyle}>
-              <span style={labelStyle}>Section Spacing</span>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                {['compact', 'normal', 'spacious'].map(s => (
-                  <Chip key={s} label={s.charAt(0).toUpperCase() + s.slice(1)} active={tweaks.bodyDensity === s} onClick={() => setTweak('bodyDensity', s)} />
-                ))}
-              </div>
-            </div>
-
-            <div style={sectionStyle}>
-              <span style={labelStyle}>Navigation Style</span>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <Chip label="Frosted" active={tweaks.navStyle === 'frosted'} onClick={() => setTweak('navStyle', 'frosted')} />
-                <Chip label="Minimal" active={tweaks.navStyle === 'minimal'} onClick={() => setTweak('navStyle', 'minimal')} />
-              </div>
-            </div>
-
-            <div style={{ marginBottom: '8px' }}>
-              <span style={labelStyle}>Visual Effects</span>
-              <Toggle label="Noise texture overlay" value={tweaks.noiseTexture} onChange={v => setTweak('noiseTexture', v)} />
-              <Toggle label="Grid background on pages" value={tweaks.gridBg} onChange={v => setTweak('gridBg', v)} />
-            </div>
-          </div>
-        </div>
-      );
-    };
-
     // ─── APP ──────────────────────────────────────────────────────────────────
     const App = () => {
       const [page, setPage] = useState('home');
       const [tweaks, setTweaksState] = useState(TWEAK_DEFAULTS);
-      const [tweaksOpen, setTweaksOpen] = useState(false);
-
-      const setTweak = (key, val) => setTweaksState(prev => ({ ...prev, [key]: val }));
-
       useEffect(() => {
         const s = document.getElementById('tweak-css') || Object.assign(document.createElement('style'), { id: 'tweak-css' });
         const spacing = tweaks.bodyDensity === 'compact' ? '60px' : tweaks.bodyDensity === 'spacious' ? '140px' : '100px';
@@ -1079,23 +944,6 @@
             <Footer setPage={navigate} />
           </main>
 
-          {/* Tweaks toggle button */}
-          {!tweaksOpen && (
-            <button onClick={() => setTweaksOpen(true)}
-              title="Open Tweaks Panel"
-              style={{ position: 'fixed', bottom: '24px', right: '24px', zIndex: 9997, width: '42px', height: '42px', borderRadius: '50%', background: 'rgba(7,7,20,0.9)', border: `1px solid ${tweaks.accentColor || '#00D4FF'}33`, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(12px)', transition: 'border-color 0.2s' }}
-              onMouseEnter={e => e.currentTarget.style.borderColor = `${tweaks.accentColor || '#00D4FF'}88`}
-              onMouseLeave={e => e.currentTarget.style.borderColor = `${tweaks.accentColor || '#00D4FF'}33`}>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <circle cx="8" cy="8" r="2.5" stroke={tweaks.accentColor || '#00D4FF'} strokeWidth="1.2" />
-                <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41" stroke={tweaks.accentColor || '#00D4FF'} strokeWidth="1.2" strokeLinecap="round" />
-              </svg>
-            </button>
-          )}
-
-          {tweaksOpen && (
-            <TweaksPanel tweaks={tweaks} setTweak={setTweak} onClose={() => setTweaksOpen(false)} />
-          )}
         </div>
       );
     };
