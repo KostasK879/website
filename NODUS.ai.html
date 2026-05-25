@@ -18,6 +18,10 @@
   <meta property="og:title" content="NODUS AI — AI Infrastructure for Operators" />
   <meta property="og:description" content="We design and build AI automation systems that eliminate friction and unlock operational leverage for ambitious businesses. Precision-built in the United Kingdom." />
   <meta property="og:image" content="https://nodusai.io/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name" content="NODUS AI" />
+  <meta property="og:locale" content="en_GB" />
 
   <!-- X (Twitter) -->
   <meta property="twitter:card" content="summary_large_image" />
@@ -25,6 +29,50 @@
   <meta property="twitter:title" content="NODUS AI — AI Infrastructure for Operators" />
   <meta property="twitter:description" content="We design and build AI automation systems that eliminate friction and unlock operational leverage for ambitious businesses. Precision-built in the United Kingdom." />
   <meta property="twitter:image" content="https://nodusai.io/og-image.png" />
+
+  <!-- Icons & theme -->
+  <link rel="apple-touch-icon" href="/favicon.png" />
+  <meta name="theme-color" content="#06060F" />
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://nodusai.io/#organization",
+        "name": "NODUS AI",
+        "url": "https://nodusai.io",
+        "logo": "https://nodusai.io/favicon.png",
+        "description": "We design and build AI automation systems that eliminate friction and unlock operational leverage for ambitious businesses. Precision-built in the United Kingdom.",
+        "areaServed": "GB",
+        "foundingLocation": {
+          "@type": "Place",
+          "addressCountry": "GB"
+        },
+        "sameAs": []
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://nodusai.io/#website",
+        "url": "https://nodusai.io",
+        "name": "NODUS AI",
+        "publisher": { "@id": "https://nodusai.io/#organization" }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://nodusai.io/#webpage",
+        "url": "https://nodusai.io",
+        "name": "NODUS AI — AI Infrastructure for Operators",
+        "description": "We design and build AI automation systems that eliminate friction and unlock operational leverage for ambitious businesses. Precision-built in the United Kingdom.",
+        "isPartOf": { "@id": "https://nodusai.io/#website" },
+        "about": { "@id": "https://nodusai.io/#organization" },
+        "inLanguage": "en-GB"
+      }
+    ]
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -514,9 +562,9 @@
           <div style={{ maxWidth: '1160px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
             <ScrollReveal><Label>About NODUS</Label></ScrollReveal>
             <ScrollReveal delay={80}>
-              <h1 style={{ fontSize: 'clamp(36px,6vw,78px)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.06, maxWidth: '780px' }}>
+              <h2 style={{ fontSize: 'clamp(36px,6vw,78px)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.06, maxWidth: '780px' }}>
                 We find the critical<br /><span style={{ color: 'var(--accent, #00D4FF)' }}>nodes</span> in your business.
-              </h1>
+              </h2>
             </ScrollReveal>
             <ScrollReveal delay={180}>
               <p style={{ fontSize: 'clamp(16px,2vw,22px)', color: 'rgba(255,255,255,0.42)', lineHeight: 1.65, maxWidth: '580px', marginTop: '28px', fontWeight: 300 }}>
@@ -614,9 +662,9 @@
             <div style={{ maxWidth: '1160px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
               <ScrollReveal><Label>What We Build</Label></ScrollReveal>
               <ScrollReveal delay={80}>
-                <h1 style={{ fontSize: 'clamp(36px,6vw,78px)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.06, maxWidth: '680px' }}>
+                <h2 style={{ fontSize: 'clamp(36px,6vw,78px)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.06, maxWidth: '680px' }}>
                   Systems that work<br />while you sleep.
-                </h1>
+                </h2>
               </ScrollReveal>
               <ScrollReveal delay={180}>
                 <p style={{ fontSize: 'clamp(15px,1.8vw,20px)', color: 'rgba(255,255,255,0.4)', maxWidth: '520px', marginTop: '24px', fontWeight: 300, lineHeight: 1.65 }}>
@@ -704,7 +752,7 @@
           <div style={{ maxWidth: '1160px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
             <ScrollReveal><Label>Selected Work</Label></ScrollReveal>
             <ScrollReveal delay={80}>
-              <h1 style={{ fontSize: 'clamp(36px,6vw,78px)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.06 }}>Case studies.</h1>
+              <h2 style={{ fontSize: 'clamp(36px,6vw,78px)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.06 }}>Case studies.</h2>
             </ScrollReveal>
             <ScrollReveal delay={180}>
               <p style={{ fontSize: 'clamp(15px,1.8vw,20px)', color: 'rgba(255,255,255,0.38)', maxWidth: '500px', marginTop: '22px', fontWeight: 300, lineHeight: 1.65 }}>
@@ -742,7 +790,7 @@
             <div style={{ maxWidth: '1160px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
               <ScrollReveal><Label>Get in Touch</Label></ScrollReveal>
               <ScrollReveal delay={80}>
-                <h1 style={{ fontSize: 'clamp(36px,6vw,78px)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.06 }}>Let's talk.</h1>
+                <h2 style={{ fontSize: 'clamp(36px,6vw,78px)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.06 }}>Let's talk.</h2>
               </ScrollReveal>
             </div>
           </div>
