@@ -220,7 +220,7 @@
     );
 
     // ─── ANIMATED HEADING ─────────────────────────────────────────────────────
-    const AnimatedHeading = ({ text, delay = 0, charDelay = 28, style = {}, className = '' }) => {
+    const AnimatedHeading = ({ text, delay = 0, charDelay = 28, style = {}, className = '', as: Tag = 'div' }) => {
       const [active, setActive] = useState(false);
       useEffect(() => {
         const t = setTimeout(() => setActive(true), delay);
@@ -229,7 +229,7 @@
       const lines = text.split('\n');
       let idx = 0;
       return (
-        <div className={className} style={style}>
+        <Tag className={className} style={style}>
           {lines.map((line, li) => (
             <div key={li} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {line.split('').map((ch, ci) => {
@@ -242,7 +242,7 @@
               })}
             </div>
           ))}
-        </div>
+        </Tag>
       );
     };
 
@@ -428,7 +428,7 @@
                   AI Automation · United Kingdom
                 </div>
               </FadeIn>
-              <AnimatedHeading text={headline} delay={220} charDelay={28}
+              <AnimatedHeading as="h1" text={headline} delay={220} charDelay={28}
                 style={{ fontSize: 'clamp(48px,8.5vw,100px)', fontWeight: 700, letterSpacing: '-0.045em', lineHeight: 1.02, marginBottom: '32px', textWrap: 'balance' }} />
               {heroSubtext !== false && (
                 <FadeIn delay={1100} duration={900} style={{ maxWidth: '520px', marginBottom: '44px' }}>
