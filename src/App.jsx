@@ -1,189 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NODUS AI — AI Infrastructure for Operators</title>
-  <link rel="icon" type="image/png" href="/favicon.png">
 
-  <!-- Primary Meta Tags -->
-  <meta name="title" content="NODUS AI — AI Infrastructure for Operators" />
-  <meta name="description" content="We design and build AI automation systems that eliminate friction and unlock operational leverage for ambitious businesses. Precision-built in the United Kingdom." />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://nodusai.io" />
+import React, { useState, useEffect, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://nodusai.io" />
-  <meta property="og:title" content="NODUS AI — AI Infrastructure for Operators" />
-  <meta property="og:description" content="We design and build AI automation systems that eliminate friction and unlock operational leverage for ambitious businesses. Precision-built in the United Kingdom." />
-  <meta property="og:image" content="https://nodusai.io/og-image.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:site_name" content="NODUS AI" />
-  <meta property="og:locale" content="en_GB" />
+// NOTE: nodusai.io needs MX records / email hosting set up before this address receives mail.
+const CONTACT_EMAIL = 'hello@nodusai.io';
 
-  <!-- X (Twitter) -->
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://nodusai.io" />
-  <meta property="twitter:title" content="NODUS AI — AI Infrastructure for Operators" />
-  <meta property="twitter:description" content="We design and build AI automation systems that eliminate friction and unlock operational leverage for ambitious businesses. Precision-built in the United Kingdom." />
-  <meta property="twitter:image" content="https://nodusai.io/og-image.png" />
+// Contact form endpoint (Formspree / Resend API route etc.), set VITE_FORM_ENDPOINT in Vercel.
+const FORM_ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT;
 
-  <!-- Icons & theme -->
-  <link rel="apple-touch-icon" href="/favicon.png" />
-  <meta name="theme-color" content="#06060F" />
-
-  <!-- Structured data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "@id": "https://nodusai.io/#organization",
-        "name": "NODUS AI",
-        "url": "https://nodusai.io",
-        "logo": "https://nodusai.io/favicon.png",
-        "description": "We design and build AI automation systems that eliminate friction and unlock operational leverage for ambitious businesses. Precision-built in the United Kingdom.",
-        "areaServed": "GB",
-        "foundingLocation": {
-          "@type": "Place",
-          "addressCountry": "GB"
-        },
-        "sameAs": []
-      },
-      {
-        "@type": "WebSite",
-        "@id": "https://nodusai.io/#website",
-        "url": "https://nodusai.io",
-        "name": "NODUS AI",
-        "publisher": { "@id": "https://nodusai.io/#organization" }
-      },
-      {
-        "@type": "WebPage",
-        "@id": "https://nodusai.io/#webpage",
-        "url": "https://nodusai.io",
-        "name": "NODUS AI — AI Infrastructure for Operators",
-        "description": "We design and build AI automation systems that eliminate friction and unlock operational leverage for ambitious businesses. Precision-built in the United Kingdom.",
-        "isPartOf": { "@id": "https://nodusai.io/#website" },
-        "about": { "@id": "https://nodusai.io/#organization" },
-        "inLanguage": "en-GB"
-      }
-    ]
-  }
-  </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #06060F;
-      --accent: #00D4FF;
-      --white: rgba(255,255,255,0.94);
-      --muted: rgba(255,255,255,0.45);
-      --dim: rgba(255,255,255,0.22);
-      --font: 'Space Grotesk', sans-serif;
-      --mono: 'Space Mono', monospace;
-      --section-pad: 140px;
-      --anim-speed: 0.4;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--white);
-      font-family: var(--font);
-      font-weight: 400;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      overflow-x: hidden;
-    }
-
-    #root { min-height: 100vh; }
-
-    .liquid-glass {
-      background: rgba(6, 6, 20, 0.55);
-      backdrop-filter: blur(18px) saturate(1.4);
-      -webkit-backdrop-filter: blur(18px) saturate(1.4);
-      position: relative;
-      overflow: hidden;
-    }
-    .liquid-glass::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      padding: 1px;
-      background: linear-gradient(135deg,
-        rgba(255,255,255,0.18) 0%,
-        rgba(255,255,255,0.04) 35%,
-        rgba(0,212,255,0.07) 70%,
-        rgba(255,255,255,0.14) 100%);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-    }
-
-    .grid-bg {
-      background-image:
-        linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
-      background-size: 64px 64px;
-    }
-
-    .glow-line {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(0,212,255,0.35), transparent);
-    }
-
-    .page-enter { animation: pgIn calc(0.55s * var(--anim-speed)) cubic-bezier(0.22,1,0.36,1) forwards; }
-    @keyframes pgIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    ::-webkit-scrollbar { width: 3px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.28); border-radius: 2px; }
-
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9998;
-      opacity: 0.35;
-    }
-
-    /* Mobile hamburger */
-    @media (max-width: 768px) {
-      #ham { display: flex !important; }
-      .hide-mobile { display: none !important; }
-      .grid-2col { grid-template-columns: 1fr !important; gap: 40px !important; }
-      .grid-3col { grid-template-columns: 1fr !important; gap: 32px !important; }
-      .grid-2work { grid-template-columns: 1fr !important; }
-      .svc-row { grid-template-columns: 48px 1fr !important; gap: 20px !important; }
-      .svc-tags { display: none !important; }
-      .footer-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
-      .footer-bottom { flex-direction: column !important; gap: 12px !important; }
-    }
-  </style>
-</head>
-<body>
-  <div id="root"></div>
-
-  <script type="text/babel">
-    const { useState, useEffect, useRef } = React;
+// ─── ROUTES ─────────────────────────────────────────────────────────────────
+const ROUTES = {
+  home:     { path: '/',         title: 'NODUS AI — AI Automation Agency, United Kingdom', description: 'We design and build AI automation systems that eliminate friction and unlock operational leverage for ambitious businesses. Precision-built in the United Kingdom.' },
+  about:    { path: '/about',    title: 'About — NODUS AI', description: 'NODUS AI is a UK-based AI automation practice built on precision, depth, and a genuine dislike of unnecessary complexity.' },
+  services: { path: '/services', title: 'Services — NODUS AI', description: 'Workflow automation, AI agents, LLM integration, data intelligence and web development for UK businesses.' },
+  work:     { path: '/work',     title: 'Work — NODUS AI', description: 'Selected NODUS AI projects and case studies.' },
+  contact:  { path: '/contact',  title: 'Contact — NODUS AI', description: 'Tell us what you are working on. Every NODUS AI engagement starts with a conversation.' },
+};
+const pageFromPath = pathname => {
+  const clean = pathname.replace(/\/+$/, '') || '/';
+  const hit = Object.entries(ROUTES).find(([, r]) => r.path === clean);
+  return hit ? hit[0] : 'notfound';
+};
+const setMeta = (sel, attr, val) => { const el = document.head.querySelector(sel); if (el) el.setAttribute(attr, val); };
 
     // ─── TWEAK DEFAULTS (spacious + fast baked in) ────────────────────────────
     const TWEAK_DEFAULTS = {
@@ -281,7 +119,7 @@
 
     // ─── SECTION ─────────────────────────────────────────────────────────────
     const Section = ({ children, style = {} }) => (
-      <div style={{ padding: 'var(--section-pad, 140px) 32px', maxWidth: '1160px', margin: '0 auto', ...style }}>
+      <div className="section" style={{ padding: 'var(--section-pad, 140px) 32px', maxWidth: '1160px', margin: '0 auto', ...style }}>
         {children}
       </div>
     );
@@ -346,10 +184,10 @@
     };
 
     // ─── BUTTONS ──────────────────────────────────────────────────────────────
-    const BtnPrimary = ({ children, onClick, style = {} }) => {
+    const BtnPrimary = ({ children, onClick, style = {}, type = 'button' }) => {
       const [hov, setHov] = useState(false);
       return (
-        <button onClick={onClick} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+        <button type={type} onClick={onClick} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
           style={{ background: hov ? 'rgba(0,212,255,0.82)' : 'var(--accent, #00D4FF)', color: '#06060F', border: 'none', padding: '13px 32px', borderRadius: '8px', fontSize: '14px', fontWeight: 600, cursor: 'pointer', fontFamily: "'Space Grotesk',sans-serif", letterSpacing: '0.03em', transition: 'background 0.2s ease', ...style }}>
           {children}
         </button>
@@ -375,7 +213,7 @@
         <div style={{ overflow: 'hidden', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)', padding: '18px 0', background: 'rgba(255,255,255,0.02)' }}>
           <div style={{ display: 'flex', animation: 'marquee 32s linear infinite', whiteSpace: 'nowrap' }}>
             {repeated.map((item, i) => (
-              <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '20px', padding: '0 32px', fontFamily: "'Space Mono',monospace", fontSize: '11px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.32)' }}>
+              <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '20px', padding: '0 32px', fontFamily: "'Space Mono',monospace", fontSize: '11px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.62)' }}>
                 {item}
                 <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'var(--accent, #00D4FF)', display: 'inline-block', opacity: 0.55 }} />
               </span>
@@ -392,7 +230,7 @@
         <div style={{ padding: '40px 36px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.07)', background: 'rgba(255,255,255,0.02)' }}>
           <div style={{ fontSize: 'clamp(42px,5vw,64px)', fontWeight: 700, letterSpacing: '-0.05em', lineHeight: 1, marginBottom: '10px', color: 'white' }}>{value}</div>
           <div style={{ fontSize: '15px', fontWeight: 500, color: 'rgba(255,255,255,0.72)', marginBottom: '6px' }}>{label}</div>
-          <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.28)', lineHeight: 1.5 }}>{sub}</div>
+          <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.55)', lineHeight: 1.5 }}>{sub}</div>
         </div>
       </ScrollReveal>
     );
@@ -404,11 +242,27 @@
           <div style={{ flexShrink: 0, width: '44px', height: '44px', borderRadius: '50%', border: '1px solid rgba(0,212,255,0.28)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Space Mono',monospace", fontSize: '11px', color: 'var(--accent, #00D4FF)', marginTop: '3px' }}>{num}</div>
           <div>
             <h3 style={{ fontSize: '20px', fontWeight: 600, letterSpacing: '-0.02em', marginBottom: '10px' }}>{title}</h3>
-            <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.44)', lineHeight: 1.76, maxWidth: '480px' }}>{body}</p>
+            <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.62)', lineHeight: 1.76, maxWidth: '480px' }}>{body}</p>
           </div>
         </div>
       </ScrollReveal>
     );
+
+    const HoverCard = ({ s, delay, setPage, accentColor }) => {
+      const [hov, setHov] = useState(false);
+      return (
+        <ScrollReveal delay={delay}>
+          <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+            onClick={() => setPage('services')}
+            className="card-pad"
+            style={{ padding: '48px 44px', background: hov ? 'rgba(0,212,255,0.04)' : 'rgba(6,6,20,0.8)', transition: 'background 0.3s', cursor: 'pointer', minHeight: '220px', height: '100%' }}>
+            <div style={{ fontFamily: "'Space Mono',monospace", fontSize: '10px', color: accentColor || 'var(--accent, #00D4FF)', letterSpacing: '0.2em', marginBottom: '22px', opacity: 0.85 }}>{s.n}</div>
+            <h3 style={{ fontSize: 'clamp(18px,2vw,23px)', fontWeight: 600, letterSpacing: '-0.025em', marginBottom: '14px', transition: 'color 0.2s', color: hov ? 'white' : 'rgba(255,255,255,0.9)' }}>{s.t}</h3>
+            <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.62)', lineHeight: 1.72 }}>{s.d}</p>
+          </div>
+        </ScrollReveal>
+      );
+    };
 
     // ─── HOME PAGE ────────────────────────────────────────────────────────────
     const HomePage = ({ setPage, headline, heroSubtext, overlayStrength, btnRadius, accentColor }) => {
@@ -432,7 +286,7 @@
                 style={{ fontSize: 'clamp(48px,8.5vw,100px)', fontWeight: 700, letterSpacing: '-0.045em', lineHeight: 1.02, marginBottom: '32px', textWrap: 'balance' }} />
               {heroSubtext !== false && (
                 <FadeIn delay={1100} duration={900} style={{ maxWidth: '520px', marginBottom: '44px' }}>
-                  <p style={{ fontSize: 'clamp(15px,1.8vw,19px)', color: 'rgba(255,255,255,0.58)', lineHeight: 1.65, fontWeight: 300 }}>
+                  <p style={{ fontSize: 'clamp(15px,1.8vw,19px)', color: 'rgba(255,255,255,0.7)', lineHeight: 1.65, fontWeight: 300 }}>
                     We design and build AI automation systems that eliminate friction and unlock operational leverage for ambitious businesses.
                   </p>
                 </FadeIn>
@@ -446,7 +300,7 @@
             </div>
             <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '0 24px 44px', display: 'flex', justifyContent: 'center', zIndex: 2 }}>
               <FadeIn delay={1900} duration={1000}>
-                <div className="liquid-glass" style={{ padding: '11px 28px', borderRadius: '100px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <div className="liquid-glass hero-pill" style={{ padding: '11px 28px', borderRadius: '100px', border: '1px solid rgba(255,255,255,0.1)' }}>
                   <p style={{ fontFamily: "'Space Mono',monospace", fontSize: 'clamp(11px,1.2vw,14px)', fontWeight: 400, letterSpacing: '0.14em', color: 'rgba(255,255,255,0.72)', textTransform: 'uppercase' }}>
                     Automation &nbsp;·&nbsp; Agents &nbsp;·&nbsp; Intelligence
                   </p>
@@ -469,34 +323,23 @@
               </ScrollReveal>
               <ScrollReveal delay={100}>
                 <button onClick={() => setPage('services')}
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.45)', fontSize: '13px', fontFamily: "'Space Grotesk',sans-serif", display: 'flex', alignItems: 'center', gap: '8px', transition: 'color 0.2s' }}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.62)', fontSize: '13px', fontFamily: "'Space Grotesk',sans-serif", display: 'flex', alignItems: 'center', gap: '8px', transition: 'color 0.2s' }}
                   onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.85)'}
-                  onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.45)'}>
+                  onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.62)'}>
                   View all services <span style={{ fontSize: '16px' }}>→</span>
                 </button>
               </ScrollReveal>
             </div>
 
-            <div className="grid-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px', background: 'rgba(255,255,255,0.04)', borderRadius: '14px', overflow: 'hidden', marginBottom: '100px' }}>
+            <div className="grid-cards" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px', background: 'rgba(255,255,255,0.06)', borderRadius: '14px', overflow: 'hidden', marginBottom: '100px' }}>
               {[
                 { n: '01', t: 'Workflow Automation', d: 'End-to-end automation of complex business processes that run without human intervention.' },
                 { n: '02', t: 'AI Agent Development', d: 'Autonomous agents that reason, plan, and act — from customer-facing to back-office.' },
                 { n: '03', t: 'LLM Integration', d: 'Embedding large language model intelligence into your products, platforms, and pipelines.' },
                 { n: '04', t: 'Data & Intelligence', d: 'Turning scattered data into structured operational intelligence your team can act on.' },
-              ].map((s, i) => {
-                const [hov, setHov] = useState(false);
-                return (
-                  <ScrollReveal key={i} delay={i * 60}>
-                    <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-                      onClick={() => setPage('services')}
-                      style={{ padding: '48px 44px', background: hov ? 'rgba(0,212,255,0.04)' : 'rgba(6,6,20,0.8)', transition: 'background 0.3s', cursor: 'pointer', minHeight: '220px' }}>
-                      <div style={{ fontFamily: "'Space Mono',monospace", fontSize: '10px', color: accentColor || 'var(--accent, #00D4FF)', letterSpacing: '0.2em', marginBottom: '22px', opacity: 0.7 }}>{s.n}</div>
-                      <h3 style={{ fontSize: 'clamp(18px,2vw,23px)', fontWeight: 600, letterSpacing: '-0.025em', marginBottom: '14px', transition: 'color 0.2s', color: hov ? 'white' : 'rgba(255,255,255,0.9)' }}>{s.t}</h3>
-                      <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.42)', lineHeight: 1.72 }}>{s.d}</p>
-                    </div>
-                  </ScrollReveal>
-                );
-              })}
+              ].map((s, i) => (
+                  <HoverCard key={i} delay={i * 60} s={s} setPage={setPage} accentColor={accentColor} />
+              ))}
             </div>
 
             {/* Stats */}
@@ -511,7 +354,7 @@
 
             {/* Manifesto */}
             <ScrollReveal>
-              <div style={{ padding: '72px 64px', borderRadius: '16px', background: 'linear-gradient(135deg, rgba(0,212,255,0.05) 0%, rgba(6,6,20,0) 60%)', border: '1px solid rgba(0,212,255,0.1)', marginBottom: '100px', position: 'relative', overflow: 'hidden' }}>
+              <div className="box-pad" style={{ padding: '72px 64px', borderRadius: '16px', background: 'linear-gradient(135deg, rgba(0,212,255,0.05) 0%, rgba(6,6,20,0) 60%)', border: '1px solid rgba(0,212,255,0.1)', marginBottom: '100px', position: 'relative', overflow: 'hidden' }}>
                 <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '200px', height: '200px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%)' }} />
                 <div style={{ fontFamily: "'Space Mono',monospace", fontSize: '10px', color: accentColor || 'var(--accent, #00D4FF)', letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: '28px' }}>Our Belief</div>
                 <blockquote style={{ fontSize: 'clamp(22px,3vw,38px)', fontWeight: 500, letterSpacing: '-0.03em', lineHeight: 1.38, color: 'rgba(255,255,255,0.82)', maxWidth: '760px', fontStyle: 'normal' }}>
@@ -540,10 +383,10 @@
 
             {/* CTA banner */}
             <ScrollReveal>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '32px', flexWrap: 'wrap', padding: '52px 60px', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.02)' }}>
+              <div className="box-pad" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '32px', flexWrap: 'wrap', padding: '52px 60px', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.02)' }}>
                 <div>
                   <h2 style={{ fontSize: 'clamp(22px,3vw,38px)', fontWeight: 700, letterSpacing: '-0.035em', marginBottom: '10px' }}>Ready to automate?</h2>
-                  <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: '15px' }}>A single conversation is all it takes to get started.</p>
+                  <p style={{ color: 'rgba(255,255,255,0.62)', fontSize: '15px' }}>A single conversation is all it takes to get started.</p>
                 </div>
                 <BtnPrimary onClick={() => setPage('contact')} style={{ borderRadius: r, flexShrink: 0 }}>Get in Touch</BtnPrimary>
               </div>
@@ -567,7 +410,7 @@
               </h2>
             </ScrollReveal>
             <ScrollReveal delay={180}>
-              <p style={{ fontSize: 'clamp(16px,2vw,22px)', color: 'rgba(255,255,255,0.42)', lineHeight: 1.65, maxWidth: '580px', marginTop: '28px', fontWeight: 300 }}>
+              <p style={{ fontSize: 'clamp(16px,2vw,22px)', color: 'rgba(255,255,255,0.62)', lineHeight: 1.65, maxWidth: '580px', marginTop: '28px', fontWeight: 300 }}>
                 A UK-based AI automation practice built on precision, depth, and a genuine dislike of unnecessary complexity.
               </p>
             </ScrollReveal>
@@ -582,10 +425,10 @@
               </p>
             </ScrollReveal>
             <ScrollReveal delay={120}>
-              <p style={{ fontSize: '16px', lineHeight: 1.82, color: 'rgba(255,255,255,0.46)', marginBottom: '22px' }}>
+              <p style={{ fontSize: '16px', lineHeight: 1.82, color: 'rgba(255,255,255,0.62)', marginBottom: '22px' }}>
                 We are a boutique AI automation practice based in the United Kingdom, working with founders, operators, and enterprises who understand that the next competitive advantage isn't headcount — it's intelligence.
               </p>
-              <p style={{ fontSize: '16px', lineHeight: 1.82, color: 'rgba(255,255,255,0.46)' }}>
+              <p style={{ fontSize: '16px', lineHeight: 1.82, color: 'rgba(255,255,255,0.62)' }}>
                 Our approach is precise and considered. We don't deploy technology for its own sake. Every system we build has a clear purpose: replace manual effort with automated intelligence, and give your team the time to do work that actually matters.
               </p>
             </ScrollReveal>
@@ -607,7 +450,7 @@
                 <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '30px' }}>
                   <div style={{ fontFamily: "'Space Mono',monospace", fontSize: '10px', color: 'var(--accent, #00D4FF)', letterSpacing: '0.2em', marginBottom: '18px' }}>{v.num}</div>
                   <h3 style={{ fontSize: '21px', fontWeight: 600, marginBottom: '12px', letterSpacing: '-0.02em' }}>{v.title}</h3>
-                  <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.76 }}>{v.body}</p>
+                  <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.62)', lineHeight: 1.76 }}>{v.body}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -626,9 +469,9 @@
               { t: "The best system is the one you'll actually use.", b: "Complexity is the enemy of adoption. We design automation that fits how your team already works — not systems that require your team to change to accommodate the technology." },
             ].map((item, i) => (
               <ScrollReveal key={i} delay={i * 80}>
-                <div style={{ padding: '44px 0', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '60px', alignItems: 'start' }}>
+                <div className="approach-row" style={{ padding: '44px 0', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '60px', alignItems: 'start' }}>
                   <h3 style={{ fontSize: 'clamp(18px,2vw,24px)', fontWeight: 600, letterSpacing: '-0.02em', lineHeight: 1.3, color: 'rgba(255,255,255,0.88)' }}>{item.t}</h3>
-                  <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.44)', lineHeight: 1.78 }}>{item.b}</p>
+                  <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.62)', lineHeight: 1.78 }}>{item.b}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -643,6 +486,28 @@
         </Section>
       </div>
     );
+
+    const SvcRow = ({ s, i, last }) => {
+      const [hov, setHov] = useState(false);
+      return (
+        <ScrollReveal delay={i * 70}>
+          <div className="svc-row"
+            onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+            style={{ display: 'grid', gridTemplateColumns: '72px 1fr 210px', gap: '40px', padding: '44px 44px', borderBottom: last ? 'none' : '1px solid rgba(255,255,255,0.06)', background: hov ? 'rgba(0,212,255,0.035)' : 'rgba(6,6,20,0.55)', transition: 'background 0.3s ease' }}>
+            <div style={{ fontFamily: "'Space Mono',monospace", fontSize: '11px', color: 'var(--accent, #00D4FF)', letterSpacing: '0.12em', paddingTop: '5px' }}>{s.num}</div>
+            <div>
+              <h2 style={{ fontSize: 'clamp(20px,2.2vw,27px)', fontWeight: 600, letterSpacing: '-0.025em', marginBottom: '14px' }}>{s.title}</h2>
+              <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.66)', lineHeight: 1.78, maxWidth: '540px' }}>{s.desc}</p>
+            </div>
+            <div className="svc-tags" style={{ display: 'flex', flexDirection: 'column', gap: '9px', paddingTop: '4px' }}>
+              {s.tags.map((t, j) => (
+                <span key={j} style={{ fontSize: '11px', color: 'rgba(255,255,255,0.7)', fontFamily: "'Space Mono',monospace", letterSpacing: '0.04em', padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>{t}</span>
+              ))}
+            </div>
+          </div>
+        </ScrollReveal>
+      );
+    };
 
     // ─── SERVICES PAGE ────────────────────────────────────────────────────────
     const ServicesPage = ({ setPage }) => {
@@ -667,7 +532,7 @@
                 </h2>
               </ScrollReveal>
               <ScrollReveal delay={180}>
-                <p style={{ fontSize: 'clamp(15px,1.8vw,20px)', color: 'rgba(255,255,255,0.4)', maxWidth: '520px', marginTop: '24px', fontWeight: 300, lineHeight: 1.65 }}>
+                <p style={{ fontSize: 'clamp(15px,1.8vw,20px)', color: 'rgba(255,255,255,0.62)', maxWidth: '520px', marginTop: '24px', fontWeight: 300, lineHeight: 1.65 }}>
                   We build across the full stack of modern AI — from simple process automation to complex multi-agent systems.
                 </p>
               </ScrollReveal>
@@ -676,27 +541,7 @@
 
           <Section>
             <div style={{ display: 'flex', flexDirection: 'column', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '14px', overflow: 'hidden', marginBottom: '90px' }}>
-              {svcs.map((s, i) => {
-                const [hov, setHov] = useState(false);
-                return (
-                  <ScrollReveal key={i} delay={i * 70}>
-                    <div className="svc-row liquid-glass"
-                      onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-                      style={{ display: 'grid', gridTemplateColumns: '72px 1fr 210px', gap: '40px', padding: '44px 44px', borderBottom: i < svcs.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none', background: hov ? 'rgba(0,212,255,0.035)' : 'transparent', transition: 'background 0.3s ease' }}>
-                      <div style={{ fontFamily: "'Space Mono',monospace", fontSize: '11px', color: 'var(--accent, #00D4FF)', letterSpacing: '0.12em', paddingTop: '5px' }}>{s.num}</div>
-                      <div>
-                        <h2 style={{ fontSize: 'clamp(20px,2.2vw,27px)', fontWeight: 600, letterSpacing: '-0.025em', marginBottom: '14px' }}>{s.title}</h2>
-                        <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.5)', lineHeight: 1.78, maxWidth: '540px' }}>{s.desc}</p>
-                      </div>
-                      <div className="svc-tags" style={{ display: 'flex', flexDirection: 'column', gap: '9px', paddingTop: '4px' }}>
-                        {s.tags.map((t, j) => (
-                          <span key={j} style={{ fontSize: '11px', color: 'rgba(255,255,255,0.35)', fontFamily: "'Space Mono',monospace", letterSpacing: '0.04em', padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{t}</span>
-                        ))}
-                      </div>
-                    </div>
-                  </ScrollReveal>
-                );
-              })}
+              {svcs.map((s, i) => <SvcRow key={i} s={s} i={i} last={i === svcs.length - 1} />)}
             </div>
 
             <div style={{ marginBottom: '90px' }}>
@@ -717,24 +562,24 @@
             </div>
 
             <ScrollReveal style={{ marginBottom: '90px' }}>
-              <div style={{ padding: '52px 56px', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.01)' }}>
+              <div className="box-pad" style={{ padding: '52px 56px', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.01)' }}>
                 <Label>Technology</Label>
                 <h3 style={{ fontSize: '24px', fontWeight: 600, letterSpacing: '-0.025em', marginBottom: '24px' }}>We work with the full stack.</h3>
-                <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.44)', lineHeight: 1.76, maxWidth: '620px', marginBottom: '36px' }}>
+                <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.62)', lineHeight: 1.76, maxWidth: '620px', marginBottom: '36px' }}>
                   We're technology-agnostic. We choose the right tools for your specific situation — not the ones we happen to have experience with. That said, we have deep expertise across the major AI platforms, cloud infrastructure providers, and automation frameworks.
                 </p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                   {['OpenAI', 'Anthropic', 'Google Gemini', 'LangChain', 'LlamaIndex', 'AWS', 'Azure', 'GCP', 'n8n', 'Make', 'Zapier', 'Supabase', 'Pinecone', 'Weaviate'].map((tech, i) => (
-                    <span key={i} style={{ padding: '7px 16px', borderRadius: '100px', border: '1px solid rgba(255,255,255,0.1)', fontSize: '12px', color: 'rgba(255,255,255,0.45)', fontFamily: "'Space Mono',monospace", letterSpacing: '0.04em' }}>{tech}</span>
+                    <span key={i} style={{ padding: '7px 16px', borderRadius: '100px', border: '1px solid rgba(255,255,255,0.1)', fontSize: '12px', color: 'rgba(255,255,255,0.62)', fontFamily: "'Space Mono',monospace", letterSpacing: '0.04em' }}>{tech}</span>
                   ))}
                 </div>
               </div>
             </ScrollReveal>
 
             <ScrollReveal>
-              <div style={{ padding: '60px', borderRadius: '14px', border: '1px solid rgba(0,212,255,0.14)', background: 'rgba(0,212,255,0.03)', textAlign: 'center' }}>
+              <div className="box-pad" style={{ padding: '60px', borderRadius: '14px', border: '1px solid rgba(0,212,255,0.14)', background: 'rgba(0,212,255,0.03)', textAlign: 'center' }}>
                 <h3 style={{ fontSize: 'clamp(22px,2.5vw,32px)', fontWeight: 600, letterSpacing: '-0.03em', marginBottom: '14px' }}>Have something specific in mind?</h3>
-                <p style={{ color: 'rgba(255,255,255,0.45)', marginBottom: '32px', fontSize: '15px', lineHeight: 1.65 }}>Every engagement starts with a conversation. No pitch, no pressure — just an honest discussion about your situation.</p>
+                <p style={{ color: 'rgba(255,255,255,0.62)', marginBottom: '32px', fontSize: '15px', lineHeight: 1.65 }}>Every engagement starts with a conversation. No pitch, no pressure — just an honest discussion about your situation.</p>
                 <BtnPrimary onClick={() => setPage('contact')}>Get in Touch</BtnPrimary>
               </div>
             </ScrollReveal>
@@ -744,7 +589,7 @@
     };
 
     // ─── WORK PAGE ────────────────────────────────────────────────────────────
-    const WorkPage = () => (
+    const WorkPage = ({ setPage }) => (
       <div style={{ paddingTop: '90px' }}>
         <div style={{ minHeight: '52vh', display: 'flex', alignItems: 'center', padding: '80px 32px', position: 'relative', overflow: 'hidden' }}>
           <div className="grid-bg" style={{ position: 'absolute', inset: 0 }} />
@@ -755,18 +600,24 @@
               <h2 style={{ fontSize: 'clamp(36px,6vw,78px)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.06 }}>Case studies.</h2>
             </ScrollReveal>
             <ScrollReveal delay={180}>
-              <p style={{ fontSize: 'clamp(15px,1.8vw,20px)', color: 'rgba(255,255,255,0.38)', maxWidth: '500px', marginTop: '22px', fontWeight: 300, lineHeight: 1.65 }}>
+              <p style={{ fontSize: 'clamp(15px,1.8vw,20px)', color: 'rgba(255,255,255,0.62)', maxWidth: '500px', marginTop: '22px', fontWeight: 300, lineHeight: 1.65 }}>
                 Detailed case studies are in preparation. Each engagement is different — we'll document the most instructive ones here.
               </p>
             </ScrollReveal>
           </div>
         </div>
         <Section>
-          <div className="grid-2work" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px', background: 'rgba(255,255,255,0.04)', borderRadius: '14px', overflow: 'hidden' }}>
+          {/* TODO(Kostas): replace with real case studies (e.g. Swift Clear demo). Placeholder grid removed. */}
+          <div style={{ padding: '52px 40px', borderRadius: '14px', border: '1px solid rgba(0,212,255,0.14)', background: 'rgba(0,212,255,0.03)', textAlign: 'center' }}>
+            <h3 style={{ fontSize: 'clamp(20px,2.4vw,28px)', fontWeight: 600, letterSpacing: '-0.03em', marginBottom: '12px' }}>Want to see a live demo?</h3>
+            <p style={{ color: 'rgba(255,255,255,0.64)', marginBottom: '28px', fontSize: '15px', lineHeight: 1.65 }}>We'll walk you through a working system built for a business like yours.</p>
+            <BtnPrimary onClick={() => setPage('contact')}>Book a Demo</BtnPrimary>
+          </div>
+          <div hidden className="grid-2work" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px', background: 'rgba(255,255,255,0.04)', borderRadius: '14px', overflow: 'hidden' }}>
             {[0, 1, 2, 3].map(i => (
               <div key={i} className="liquid-glass" style={{ aspectRatio: '4/3', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '12px', borderRadius: 0 }}>
                 <div style={{ width: '32px', height: '1px', background: 'rgba(0,212,255,0.22)' }} />
-                <span style={{ fontFamily: "'Space Mono',monospace", fontSize: '9px', color: 'rgba(255,255,255,0.16)', letterSpacing: '0.2em', textTransform: 'uppercase' }}>Coming Soon</span>
+                <span style={{ fontFamily: "'Space Mono',monospace", fontSize: '9px', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.2em', textTransform: 'uppercase' }}>Coming Soon</span>
               </div>
             ))}
           </div>
@@ -774,10 +625,45 @@
       </div>
     );
 
+    const FaqItem = ({ item, i }) => {
+      const [open, setOpen] = useState(false);
+      return (
+        <ScrollReveal delay={i * 60}>
+          <div style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+            <button aria-expanded={open} onClick={() => setOpen(o => !o)} style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px 0', textAlign: 'left', gap: '20px' }}>
+              <span style={{ fontSize: '16px', fontWeight: 500, color: 'rgba(255,255,255,0.88)', fontFamily: "'Space Grotesk',sans-serif", lineHeight: 1.4 }}>{item.q}</span>
+              <span style={{ color: 'var(--accent, #00D4FF)', fontSize: '20px', flexShrink: 0, transition: 'transform 0.25s', transform: open ? 'rotate(45deg)' : 'none', display: 'inline-block' }}>+</span>
+            </button>
+            {open && (
+              <div style={{ paddingBottom: '24px', paddingRight: '40px' }}>
+                <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.64)', lineHeight: 1.76 }}>{item.a}</p>
+              </div>
+            )}
+          </div>
+        </ScrollReveal>
+      );
+    };
+
     // ─── CONTACT PAGE ─────────────────────────────────────────────────────────
     const ContactPage = () => {
       const [form, setForm] = useState({ name: '', email: '', company: '', message: '' });
       const [sent, setSent] = useState(false);
+      const [status, setStatus] = useState('idle'); // idle | sending | error
+      const onSubmit = async e => {
+        e.preventDefault();
+        if (!FORM_ENDPOINT) {
+          // No backend configured yet: hand off to the visitor's mail client instead of pretending it was sent.
+          const body = `${form.message}\n\n${form.name}${form.company ? ` (${form.company})` : ''}\n${form.email}`;
+          window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Enquiry from nodusai.io')}&body=${encodeURIComponent(body)}`;
+          return;
+        }
+        setStatus('sending');
+        try {
+          const res = await fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(form) });
+          if (!res.ok) throw new Error(String(res.status));
+          setSent(true); setStatus('idle');
+        } catch { setStatus('error'); }
+      };
       const inp = { width: '100%', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: '8px', padding: '13px 16px', color: 'white', fontSize: '15px', fontFamily: "'Space Grotesk',sans-serif", outline: 'none', transition: 'border-color 0.2s' };
       const focus = e => e.target.style.borderColor = 'rgba(0,212,255,0.4)';
       const blur = e => e.target.style.borderColor = 'rgba(255,255,255,0.09)';
@@ -798,10 +684,10 @@
           <Section>
             <div className="grid-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'start', marginBottom: '90px' }}>
               <ScrollReveal>
-                <p style={{ fontSize: '19px', lineHeight: 1.7, color: 'rgba(255,255,255,0.55)', fontWeight: 300, marginBottom: '52px' }}>
+                <p style={{ fontSize: '19px', lineHeight: 1.7, color: 'rgba(255,255,255,0.7)', fontWeight: 300, marginBottom: '52px' }}>
                   Every engagement starts with a conversation. Tell us what you're working with and what you're trying to solve. We'll take it from there.
                 </p>
-                {[['EMAIL', 'hello@nodus.ai', 'mailto:hello@nodus.ai'], ['LOCATION', 'United Kingdom', null]].map(([lbl, val, href]) => (
+                {[['EMAIL', CONTACT_EMAIL, `mailto:${CONTACT_EMAIL}`], ['LOCATION', 'United Kingdom', null]].map(([lbl, val, href]) => (
                   <div key={lbl} style={{ marginBottom: '32px' }}>
                     <div style={{ fontFamily: "'Space Mono',monospace", fontSize: '9px', color: 'var(--accent, #00D4FF)', letterSpacing: '0.24em', marginBottom: '8px' }}>{lbl}</div>
                     {href ? <a href={href} style={{ color: 'rgba(255,255,255,0.65)', textDecoration: 'none', fontSize: '16px' }}>{val}</a> : <span style={{ color: 'rgba(255,255,255,0.65)', fontSize: '16px' }}>{val}</span>}
@@ -817,15 +703,16 @@
                       <polyline points="12,20 18,26 28,14" stroke="#00D4FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
                     </svg>
                     <h3 style={{ fontSize: '22px', fontWeight: 600, marginBottom: '10px' }}>Message received.</h3>
-                    <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '14px' }}>We'll be in touch shortly.</p>
+                    <p style={{ color: 'rgba(255,255,255,0.62)', fontSize: '14px' }}>We'll be in touch shortly.</p>
                   </div>
                 ) : (
-                  <form onSubmit={e => { e.preventDefault(); setSent(true); }} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                  <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                     {[['text', 'Your name', 'name'], ['email', 'Email address', 'email'], ['text', 'Company (optional)', 'company']].map(([type, ph, key]) => (
-                      <input key={key} type={type} placeholder={ph} required={key !== 'company'} value={form[key]} onChange={e => setForm(p => ({ ...p, [key]: e.target.value }))} onFocus={focus} onBlur={blur} style={inp} />
+                      <input key={key} type={type} name={key} aria-label={ph} autoComplete={key === 'company' ? 'organization' : key} placeholder={ph} required={key !== 'company'} value={form[key]} onChange={e => setForm(p => ({ ...p, [key]: e.target.value }))} onFocus={focus} onBlur={blur} style={inp} />
                     ))}
-                    <textarea placeholder="What are you working on?" required rows={5} value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))} onFocus={focus} onBlur={blur} style={{ ...inp, resize: 'vertical' }} />
-                    <BtnPrimary style={{ width: '100%', padding: '15px' }}>Send Message</BtnPrimary>
+                    <textarea name="message" aria-label="What are you working on?" placeholder="What are you working on?" required rows={5} value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))} onFocus={focus} onBlur={blur} style={{ ...inp, resize: 'vertical' }} />
+                    <BtnPrimary type="submit" style={{ width: '100%', padding: '15px', opacity: status === 'sending' ? 0.7 : 1 }}>{status === 'sending' ? 'Sending…' : 'Send Message'}</BtnPrimary>
+                    {status === 'error' && <p role="alert" style={{ color: '#ff8a8a', fontSize: '14px' }}>Something went wrong. Please email {CONTACT_EMAIL} directly.</p>}
                   </form>
                 )}
               </ScrollReveal>
@@ -842,24 +729,8 @@
                 { q: "How long does a typical project take?", a: "It depends entirely on scope. A focused single-workflow automation might take 2–4 weeks from discovery to deployment. A broader multi-system integration engagement could run 2–3 months. We'll give you a realistic timeline before we start." },
                 { q: "Do you offer ongoing support after deployment?", a: "Yes, and we think it's essential. AI systems need monitoring, tuning, and occasional updates as your business evolves. We offer ongoing support arrangements and won't disappear after the first deploy." },
                 { q: "What if we don't know exactly what we need?", a: "That's the most common starting point. A discovery call helps us understand your situation and identify the highest-leverage opportunities. You'll leave with clarity on what's possible and what we'd recommend — with no obligation." },
-              ].map((item, i) => {
-                const [open, setOpen] = useState(false);
-                return (
-                  <ScrollReveal key={i} delay={i * 60}>
-                    <div style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                      <button onClick={() => setOpen(o => !o)} style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px 0', textAlign: 'left', gap: '20px' }}>
-                        <span style={{ fontSize: '16px', fontWeight: 500, color: 'rgba(255,255,255,0.82)', fontFamily: "'Space Grotesk',sans-serif", lineHeight: 1.4 }}>{item.q}</span>
-                        <span style={{ color: 'var(--accent, #00D4FF)', fontSize: '20px', flexShrink: 0, transition: 'transform 0.25s', transform: open ? 'rotate(45deg)' : 'none', display: 'inline-block' }}>+</span>
-                      </button>
-                      {open && (
-                        <div style={{ paddingBottom: '24px', paddingRight: '40px' }}>
-                          <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.44)', lineHeight: 1.76 }}>{item.a}</p>
-                        </div>
-                      )}
-                    </div>
-                  </ScrollReveal>
-                );
-              })}
+              ].map((item, i) => <FaqItem key={i} item={item} i={i} />)}
+
             </div>
           </Section>
         </div>
@@ -886,12 +757,11 @@
             <div className="hide-mobile" style={{ display: 'flex', alignItems: 'center', gap: '36px' }}>
               {links.map(l => {
                 const active = page === l.id;
-                const [hov, setHov] = useState(false);
                 return (
-                  <button key={l.id} onClick={() => go(l.id)} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px 0', fontFamily: "'Space Grotesk',sans-serif", fontSize: '14px', fontWeight: 400, letterSpacing: '0.01em', color: active ? (accentColor || 'var(--accent, #00D4FF)') : hov ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.55)', transition: 'color 0.2s ease', borderBottom: active ? `1px solid ${accentColor || '#00D4FF'}80` : '1px solid transparent' }}>
+                  <a key={l.id} href={ROUTES[l.id].path} onClick={e => { e.preventDefault(); go(l.id); }} className="nav-link" aria-current={active ? 'page' : undefined}
+                    style={{ textDecoration: 'none', background: 'none', border: 'none', cursor: 'pointer', padding: '4px 0', fontFamily: "'Space Grotesk',sans-serif", fontSize: '14px', fontWeight: 400, letterSpacing: '0.01em', color: active ? (accentColor || 'var(--accent, #00D4FF)') : 'rgba(255,255,255,0.72)', transition: 'color 0.2s ease', borderBottom: active ? `1px solid ${accentColor || '#00D4FF'}80` : '1px solid transparent' }}>
                     {l.label}
-                  </button>
+                  </a>
                 );
               })}
               <button onClick={() => go('contact')}
@@ -901,14 +771,14 @@
                 Get in Touch
               </button>
             </div>
-            <button id="ham" onClick={() => setMobileOpen(o => !o)} style={{ background: 'none', border: 'none', cursor: 'pointer', flexDirection: 'column', gap: '5px', padding: '4px', display: 'none' }}>
+            <button id="ham" aria-label="Menu" aria-expanded={mobileOpen} onClick={() => setMobileOpen(o => !o)} style={{ background: 'none', border: 'none', cursor: 'pointer', flexDirection: 'column', gap: '5px', padding: '4px', display: 'none' }}>
               {[0,1,2].map(i => <span key={i} style={{ display: 'block', width: '22px', height: '1.5px', background: 'rgba(255,255,255,0.8)' }} />)}
             </button>
           </div>
           {mobileOpen && (
             <div className="liquid-glass" style={{ maxWidth: '1160px', margin: '8px auto 0', padding: '20px 24px', borderRadius: '12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
               {[...links, { label: 'Contact', id: 'contact' }].map(l => (
-                <button key={l.id} onClick={() => go(l.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '12px 0', textAlign: 'left', fontFamily: "'Space Grotesk',sans-serif", fontSize: '16px', color: page === l.id ? (accentColor || 'var(--accent, #00D4FF)') : 'rgba(255,255,255,0.7)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>{l.label}</button>
+                <a key={l.id} href={ROUTES[l.id].path} onClick={e => { e.preventDefault(); go(l.id); }} style={{ textDecoration: 'none', display: 'block', padding: '12px 0', textAlign: 'left', fontFamily: "'Space Grotesk',sans-serif", fontSize: '16px', color: page === l.id ? (accentColor || 'var(--accent, #00D4FF)') : 'rgba(255,255,255,0.7)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>{l.label}</a>
               ))}
             </div>
           )}
@@ -924,42 +794,64 @@
           <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr', gap: '60px', marginBottom: '64px' }}>
             <div>
               <NodusLogo onClick={() => setPage('home')} />
-              <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '14px', lineHeight: 1.75, marginTop: '20px', maxWidth: '280px' }}>AI automation systems for ambitious businesses. Precision-built in the United Kingdom.</p>
+              <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '14px', lineHeight: 1.75, marginTop: '20px', maxWidth: '280px' }}>AI automation systems for ambitious businesses. Precision-built in the United Kingdom.</p>
             </div>
             <div>
               <div style={{ fontFamily: "'Space Mono',monospace", fontSize: '9px', color: 'var(--accent, #00D4FF)', letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: '22px' }}>Navigation</div>
               {[['About', 'about'], ['Services', 'services'], ['Work', 'work'], ['Contact', 'contact']].map(([label, id]) => (
-                <button key={id} onClick={() => setPage(id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.38)', fontSize: '14px', fontFamily: "'Space Grotesk',sans-serif", marginBottom: '12px', padding: 0, transition: 'color 0.2s' }}
+                <a key={id} href={ROUTES[id].path} onClick={e => { e.preventDefault(); setPage(id); }} style={{ display: 'block', textDecoration: 'none', color: 'rgba(255,255,255,0.62)', fontSize: '14px', fontFamily: "'Space Grotesk',sans-serif", marginBottom: '12px', padding: 0, transition: 'color 0.2s' }}
                   onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.8)'}
-                  onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.38)'}>
+                  onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.62)'}>
                   {label}
-                </button>
+                </a>
               ))}
             </div>
             <div>
               <div style={{ fontFamily: "'Space Mono',monospace", fontSize: '9px', color: 'var(--accent, #00D4FF)', letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: '22px' }}>Contact</div>
-              <a href="mailto:hello@nodus.ai" style={{ color: 'rgba(255,255,255,0.38)', fontSize: '14px', textDecoration: 'none', display: 'block', marginBottom: '12px', transition: 'color 0.2s' }}
+              <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: 'rgba(255,255,255,0.62)', fontSize: '14px', textDecoration: 'none', display: 'block', marginBottom: '12px', transition: 'color 0.2s' }}
                 onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.8)'}
-                onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.38)'}>
-                hello@nodus.ai
+                onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.62)'}>
+                {CONTACT_EMAIL}
               </a>
-              <span style={{ color: 'rgba(255,255,255,0.28)', fontSize: '14px' }}>United Kingdom</span>
+              <span style={{ color: 'rgba(255,255,255,0.55)', fontSize: '14px' }}>United Kingdom</span>
             </div>
           </div>
           <div className="footer-bottom" style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <span style={{ color: 'rgba(255,255,255,0.32)', fontSize: '12px', fontFamily: "'Space Mono',monospace", letterSpacing: '0.04em' }}>© 2026 NODUS AI LTD · Company No. <span style={{ color: 'rgba(255,255,255,0.55)' }}>16956325</span></span>
-              <span style={{ color: 'rgba(255,255,255,0.22)', fontSize: '11px', fontFamily: "'Space Mono',monospace", letterSpacing: '0.04em' }}>ICO Registration · <span style={{ color: 'rgba(255,255,255,0.45)' }}>ZC134560</span></span>
+              <span style={{ color: 'rgba(255,255,255,0.62)', fontSize: '12px', fontFamily: "'Space Mono',monospace", letterSpacing: '0.04em' }}>© 2026 NODUS AI LTD · Company No. <span style={{ color: 'rgba(255,255,255,0.7)' }}>16956325</span></span>
+              <span style={{ color: 'rgba(255,255,255,0.55)', fontSize: '11px', fontFamily: "'Space Mono',monospace", letterSpacing: '0.04em' }}>ICO Registration · <span style={{ color: 'rgba(255,255,255,0.62)' }}>ZC134560</span></span>
             </div>
-            <span style={{ color: 'rgba(255,255,255,0.16)', fontSize: '12px', fontFamily: "'Space Mono',monospace", letterSpacing: '0.04em' }}>Registered in England &amp; Wales</span>
+            <span style={{ color: 'rgba(255,255,255,0.55)', fontSize: '12px', fontFamily: "'Space Mono',monospace", letterSpacing: '0.04em' }}>Registered in England &amp; Wales</span>
           </div>
         </div>
       </footer>
     );
 
+    const NotFoundPage = ({ setPage }) => (
+      <div style={{ paddingTop: '90px', minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '140px 24px' }}>
+        <div>
+          <Label>404</Label>
+          <h1 style={{ fontSize: 'clamp(32px,5vw,60px)', fontWeight: 700, letterSpacing: '-0.04em', marginBottom: '28px' }}>Page not found.</h1>
+          <BtnPrimary onClick={() => setPage('home')}>Back to home</BtnPrimary>
+        </div>
+      </div>
+    );
+
     // ─── APP ──────────────────────────────────────────────────────────────────
     const App = () => {
-      const [page, setPage] = useState('home');
+      const location = useLocation();
+      const routerNavigate = useNavigate();
+      const page = pageFromPath(location.pathname);
+      useEffect(() => {
+        const r = ROUTES[page] || { title: 'Page not found — NODUS AI', description: ROUTES.home.description, path: location.pathname };
+        const url = `https://nodusai.io${r.path === '/' ? '/' : r.path}`;
+        document.title = r.title;
+        setMeta('meta[name="description"]', 'content', r.description);
+        setMeta('meta[property="og:title"]', 'content', r.title);
+        setMeta('meta[property="og:description"]', 'content', r.description);
+        setMeta('meta[property="og:url"]', 'content', url);
+        setMeta('link[rel="canonical"]', 'href', url);
+      }, [page, location.pathname]);
       const [tweaks, setTweaksState] = useState(TWEAK_DEFAULTS);
       useEffect(() => {
         const s = document.getElementById('tweak-css') || Object.assign(document.createElement('style'), { id: 'tweak-css' });
@@ -974,14 +866,15 @@
         document.head.appendChild(s);
       }, [tweaks.accentColor, tweaks.noiseTexture, tweaks.gridBg, tweaks.animSpeed, tweaks.bodyDensity]);
 
-      const navigate = id => { setPage(id); window.scrollTo({ top: 0, behavior: 'instant' }); };
+      const navigate = id => { routerNavigate(ROUTES[id].path); window.scrollTo({ top: 0, behavior: 'instant' }); };
 
       const pages = {
         home: <HomePage setPage={navigate} headline={tweaks.headline} heroSubtext={tweaks.heroSubtext} overlayStrength={tweaks.overlayStrength} btnRadius={tweaks.btnRadius} accentColor={tweaks.accentColor} />,
         about: <AboutPage setPage={navigate} />,
         services: <ServicesPage setPage={navigate} />,
-        work: <WorkPage />,
+        work: <WorkPage setPage={navigate} />,
         contact: <ContactPage />,
+        notfound: <NotFoundPage setPage={navigate} />,
       };
 
       return (
@@ -996,7 +889,5 @@
       );
     };
 
-    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-  </script>
-</body>
-</html>
+export default App;
+  
