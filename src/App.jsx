@@ -1,27 +1,20 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { ROUTES } from './seo.js';
+import useRouteMeta from './useRouteMeta.js';
 
-// NOTE: nodusai.io needs MX records / email hosting set up before this address receives mail.
 const CONTACT_EMAIL = 'hello@nodusai.io';
 
 // Contact form endpoint (Formspree / Resend API route etc.), set VITE_FORM_ENDPOINT in Vercel.
 const FORM_ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT;
 
-// ─── ROUTES ─────────────────────────────────────────────────────────────────
-const ROUTES = {
-  home:     { path: '/',         title: 'NODUS AI — AI Automation Agency, United Kingdom', description: 'We design and build AI automation systems that eliminate friction and unlock operational leverage for ambitious businesses. Precision-built in the United Kingdom.' },
-  about:    { path: '/about',    title: 'About — NODUS AI', description: 'NODUS AI is a UK-based AI automation practice built on precision, depth, and a genuine dislike of unnecessary complexity.' },
-  services: { path: '/services', title: 'Services — NODUS AI', description: 'Workflow automation, AI agents, LLM integration, data intelligence and web development for UK businesses.' },
-  work:     { path: '/work',     title: 'Work — NODUS AI', description: 'Selected NODUS AI projects and case studies.' },
-  contact:  { path: '/contact',  title: 'Contact — NODUS AI', description: 'Tell us what you are working on. Every NODUS AI engagement starts with a conversation.' },
-};
+// ─── ROUTES (metadata lives in ./seo.js) ────────────────────────────────────
 const pageFromPath = pathname => {
   const clean = pathname.replace(/\/+$/, '') || '/';
   const hit = Object.entries(ROUTES).find(([, r]) => r.path === clean);
   return hit ? hit[0] : 'notfound';
 };
-const setMeta = (sel, attr, val) => { const el = document.head.querySelector(sel); if (el) el.setAttribute(attr, val); };
 
     // ─── TWEAK DEFAULTS (spacious + fast baked in) ────────────────────────────
     const TWEAK_DEFAULTS = {
@@ -842,16 +835,7 @@ const setMeta = (sel, attr, val) => { const el = document.head.querySelector(sel
       const location = useLocation();
       const routerNavigate = useNavigate();
       const page = pageFromPath(location.pathname);
-      useEffect(() => {
-        const r = ROUTES[page] || { title: 'Page not found — NODUS AI', description: ROUTES.home.description, path: location.pathname };
-        const url = `https://nodusai.io${r.path === '/' ? '/' : r.path}`;
-        document.title = r.title;
-        setMeta('meta[name="description"]', 'content', r.description);
-        setMeta('meta[property="og:title"]', 'content', r.title);
-        setMeta('meta[property="og:description"]', 'content', r.description);
-        setMeta('meta[property="og:url"]', 'content', url);
-        setMeta('link[rel="canonical"]', 'href', url);
-      }, [page, location.pathname]);
+      useRouteMeta(page, location.pathname);
       const [tweaks, setTweaksState] = useState(TWEAK_DEFAULTS);
       useEffect(() => {
         const s = document.getElementById('tweak-css') || Object.assign(document.createElement('style'), { id: 'tweak-css' });
