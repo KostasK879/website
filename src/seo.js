@@ -2,7 +2,7 @@
 // and scripts/prerender.mjs (static HTML per route for social crawlers).
 export const SITE_URL = 'https://nodusai.io';
 export const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
-export const OG_IMAGE_ALT = 'NODUS AI website hero: "Automate the Impossible." AI automation, United Kingdom';
+export const OG_IMAGE_ALT = 'NODUS AI logo on a dark background: AI automation for Kent businesses';
 
 export const ROUTES = {
   home: {

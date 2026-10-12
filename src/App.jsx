@@ -32,21 +32,8 @@ const pageFromPath = pathname => {
 
     // ─── LOGO ─────────────────────────────────────────────────────────────────
     const NodusLogo = ({ scale = 1, onClick }) => (
-      <button onClick={onClick} style={{ background: 'none', border: 'none', cursor: onClick ? 'pointer' : 'default', padding: 0, display: 'flex', alignItems: 'center', gap: `${10 * scale}px` }}>
-        <svg width={`${26 * scale}`} height={`${26 * scale}`} viewBox="0 0 26 26" fill="none">
-          <line x1="13" y1="3" x2="3" y2="21" stroke="rgba(0,212,255,0.3)" strokeWidth="1" />
-          <line x1="13" y1="3" x2="23" y2="21" stroke="rgba(0,212,255,0.3)" strokeWidth="1" />
-          <line x1="3" y1="21" x2="23" y2="21" stroke="rgba(0,212,255,0.18)" strokeWidth="1" />
-          <line x1="13" y1="3" x2="13" y2="21" stroke="rgba(0,212,255,0.12)" strokeWidth="1" strokeDasharray="2 3" />
-          <circle cx="13" cy="3" r="2.5" fill="#00D4FF" />
-          <circle cx="3" cy="21" r="1.8" fill="rgba(0,212,255,0.5)" />
-          <circle cx="23" cy="21" r="1.8" fill="rgba(0,212,255,0.5)" />
-          <circle cx="13" cy="13" r="1.2" fill="rgba(255,255,255,0.55)" />
-        </svg>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: 0, lineHeight: 1 }}>
-          <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: `${18 * scale}px`, letterSpacing: '0.14em', color: 'rgba(255,255,255,0.95)', lineHeight: 1 }}>NODUS</span>
-          <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: `${13 * scale}px`, letterSpacing: '0.06em', color: '#00D4FF', lineHeight: 1, marginLeft: '1px' }}>.ai</span>
-        </div>
+      <button onClick={onClick} aria-label="NODUS AI home" style={{ background: 'none', border: 'none', cursor: onClick ? 'pointer' : 'default', padding: 0, display: 'flex', alignItems: 'center' }}>
+        <img src="/logo/nodus-ai-logo-white.svg" alt="NODUS AI" width={Math.round(144 * scale)} height={Math.round(20 * scale)} style={{ display: 'block', height: `${20 * scale}px`, width: 'auto' }} />
       </button>
     );
 
