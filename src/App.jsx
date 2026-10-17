@@ -7,7 +7,7 @@ import useRouteMeta from './useRouteMeta.js';
 const CONTACT_EMAIL = 'hello@nodusai.io';
 
 // Contact form endpoint (Formspree / Resend API route etc.), set VITE_FORM_ENDPOINT in Vercel.
-const FORM_ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT;
+const FORM_ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT || '/api/contact';
 
 // ─── ROUTES (metadata lives in ./seo.js) ────────────────────────────────────
 const pageFromPath = pathname => {
@@ -626,7 +626,7 @@ const pageFromPath = pathname => {
 
     // ─── CONTACT PAGE ─────────────────────────────────────────────────────────
     const ContactPage = () => {
-      const [form, setForm] = useState({ name: '', email: '', company: '', message: '' });
+      const [form, setForm] = useState({ name: '', email: '', company: '', message: '', website: '' });
       const [sent, setSent] = useState(false);
       const [status, setStatus] = useState('idle'); // idle | sending | error
       const onSubmit = async e => {
@@ -691,6 +691,7 @@ const pageFromPath = pathname => {
                       <input key={key} type={type} name={key} aria-label={ph} autoComplete={key === 'company' ? 'organization' : key} placeholder={ph} required={key !== 'company'} value={form[key]} onChange={e => setForm(p => ({ ...p, [key]: e.target.value }))} onFocus={focus} onBlur={blur} style={inp} />
                     ))}
                     <textarea name="message" aria-label="What are you working on?" placeholder="What are you working on?" required rows={5} value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))} onFocus={focus} onBlur={blur} style={{ ...inp, resize: 'vertical' }} />
+                    <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" value={form.website} onChange={e => setForm(p => ({ ...p, website: e.target.value }))} style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0 }} />
                     <BtnPrimary type="submit" style={{ width: '100%', padding: '15px', opacity: status === 'sending' ? 0.7 : 1 }}>{status === 'sending' ? 'Sending…' : 'Send Message'}</BtnPrimary>
                     {status === 'error' && <p role="alert" style={{ color: '#ff8a8a', fontSize: '14px' }}>Something went wrong. Please email {CONTACT_EMAIL} directly.</p>}
                   </form>
