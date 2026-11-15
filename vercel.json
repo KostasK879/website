@@ -4,6 +4,12 @@
   "outputDirectory": "dist",
   "redirects": [
     {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.nodusai.io" }],
+      "destination": "https://nodusai.io/$1",
+      "permanent": true
+    },
+    {
       "source": "/NODUS.ai.html",
       "destination": "/",
       "permanent": true

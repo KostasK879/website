@@ -5,7 +5,7 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ROUTES, NOT_FOUND, canonicalFor } from '../src/seo.js';
+import { ROUTES, NOT_FOUND, canonicalFor, OG_IMAGE_ALT } from '../src/seo.js';
 import { render } from '../ssr-dist/entry-server.js';
 
 const dist = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist');
@@ -37,6 +37,8 @@ const applyHead = (html, { title, description, url, robots }) => {
   out = setAttr(out, /<meta property="og:description"[^>]*>/g, 'content', description);
   out = setAttr(out, /<meta name="twitter:title"[^>]*>/g, 'content', title);
   out = setAttr(out, /<meta name="twitter:description"[^>]*>/g, 'content', description);
+  out = setAttr(out, /<meta property="og:image:alt"[^>]*>/g, 'content', OG_IMAGE_ALT);
+  out = setAttr(out, /<meta name="twitter:image:alt"[^>]*>/g, 'content', OG_IMAGE_ALT);
   if (url) {
     out = setAttr(out, /<link rel="canonical"[^>]*>/g, 'href', url);
     out = setAttr(out, /<meta property="og:url"[^>]*>/g, 'content', url);
@@ -89,24 +91,25 @@ const assertRoute = (html, { path, h1, snippets }) => {
   if (org.areaServed !== 'United Kingdom') throw new Error(`prerender: ${path} areaServed is ${JSON.stringify(org.areaServed)}`);
   if (org.address || org.telephone || org.sameAs) throw new Error(`prerender: ${path} JSON-LD still has address, telephone, or sameAs`);
   if (/addressLocality|addressRegion|"address"/.test(ld[1])) throw new Error(`prerender: ${path} JSON-LD still contains an address`);
+  if (/\b(chatham|kent|medway)\b/i.test(html)) throw new Error(`prerender: ${path} still mentions a town or county`);
 };
 
 const EXPECTED = {
   '/': {
     h1: 'Automate the Impossible.',
-    snippets: ['We design and build AI automation systems', 'href="/services"', 'href="/contact"', 'class="sr-only"'],
+    snippets: ['NODUS AI builds AI receptionists for UK trade and service businesses', 'They answer every call, quote and book jobs, and text you the details.', 'poster="/hero-poster.jpg"', 'preload="metadata"', 'href="/services"', 'href="/contact"', 'class="sr-only"'],
   },
   '/about': {
     h1: 'We find the critical',
-    snippets: ['boutique AI automation practice', 'href="/contact"'],
+    snippets: ['A UK practice building AI receptionists', 'href="/contact"'],
   },
   '/services': {
     h1: 'Systems that work',
-    snippets: ['Workflow Automation', 'href="/contact"'],
+    snippets: ['AI Receptionist', 'Missed-call text-back', 'Quote &amp; booking bots', 'Workflow Automation', 'href="/contact"'],
   },
   '/work': {
     h1: 'Case studies.',
-    snippets: ['Swift Clear', 'https://swift-clear.vercel.app', 'not a paying client engagement', 'Book a Demo', 'Detailed case studies are in preparation'],
+    snippets: ['Swift Clear', 'https://swift-clear.vercel.app', 'a UK waste-removal firm', 'not a paying client engagement', 'Book a Demo', 'Detailed case studies are in preparation'],
   },
   '/contact': {
     h1: "Let's talk.",

@@ -189,7 +189,7 @@ const pageFromPath = pathname => {
 
     // ─── MARQUEE ──────────────────────────────────────────────────────────────
     const Marquee = () => {
-      const items = ['Workflow Automation', 'AI Agents', 'LLM Integration', 'Data Intelligence', 'Process Engineering', 'Autonomous Systems', 'AI Strategy', 'Custom Models'];
+      const items = ['AI Receptionists', 'Missed-call text-back', 'Quote & booking bots', 'Workflow Automation', 'UK trade businesses', 'After-hours answering', 'Job booking', 'Text the details'];
       const repeated = [...items, ...items, ...items];
       return (
         <div style={{ overflow: 'hidden', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)', padding: '18px 0', background: 'rgba(255,255,255,0.02)' }}>
@@ -254,22 +254,22 @@ const pageFromPath = pathname => {
         <div>
           {/* Hero */}
           <div style={{ minHeight: '100vh', position: 'relative', overflow: 'hidden' }}>
-            <video autoPlay loop muted playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}>
+            <video autoPlay loop muted playsInline preload="metadata" poster="/hero-poster.jpg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}>
               <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260423_084718_72a17915-4964-4059-afcd-22d59399b72e.mp4" type="video/mp4" />
             </video>
             <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(to bottom, rgba(6,6,20,${overlayA * 0.65}) 0%, rgba(6,6,20,${overlayA * 0.24}) 45%, rgba(6,6,20,${overlayA}) 100%)`, zIndex: 1 }} />
             <div style={{ position: 'relative', zIndex: 2, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '120px 28px 160px' }}>
               <FadeIn delay={80} duration={600}>
                 <div style={{ fontFamily: "'Space Mono',monospace", fontSize: '10px', letterSpacing: '0.28em', color: accentColor || 'var(--accent, #00D4FF)', marginBottom: '36px', textTransform: 'uppercase' }}>
-                  AI Automation · United Kingdom
+                  AI Receptionists · United Kingdom
                 </div>
               </FadeIn>
               <AnimatedHeading as="h1" text={headline} delay={220} charDelay={28}
                 style={{ fontSize: 'clamp(48px,8.5vw,100px)', fontWeight: 700, letterSpacing: '-0.045em', lineHeight: 1.02, marginBottom: '32px', textWrap: 'balance' }} />
               {heroSubtext !== false && (
-                <FadeIn delay={1100} duration={900} style={{ maxWidth: '520px', marginBottom: '44px' }}>
+                <FadeIn delay={1100} duration={900} style={{ maxWidth: '640px', marginBottom: '44px' }}>
                   <p style={{ fontSize: 'clamp(15px,1.8vw,19px)', color: 'rgba(255,255,255,0.7)', lineHeight: 1.65, fontWeight: 300 }}>
-                    We design and build AI automation systems that eliminate friction and unlock operational leverage for ambitious businesses.
+                    NODUS AI builds AI receptionists for UK trade and service businesses. They answer every call, quote and book jobs, and text you the details.
                   </p>
                 </FadeIn>
               )}
@@ -284,7 +284,7 @@ const pageFromPath = pathname => {
               <FadeIn delay={1900} duration={1000}>
                 <div className="liquid-glass hero-pill" style={{ padding: '11px 28px', borderRadius: '100px', border: '1px solid rgba(255,255,255,0.1)' }}>
                   <p style={{ fontFamily: "'Space Mono',monospace", fontSize: 'clamp(11px,1.2vw,14px)', fontWeight: 400, letterSpacing: '0.14em', color: 'rgba(255,255,255,0.72)', textTransform: 'uppercase' }}>
-                    Automation &nbsp;·&nbsp; Agents &nbsp;·&nbsp; Intelligence
+                    Answer &nbsp;·&nbsp; Quote &nbsp;·&nbsp; Book
                   </p>
                 </div>
               </FadeIn>
@@ -300,7 +300,7 @@ const pageFromPath = pathname => {
               <ScrollReveal>
                 <Label>What We Do</Label>
                 <h2 style={{ fontSize: 'clamp(28px,4vw,52px)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.08, maxWidth: '520px' }}>
-                  Every discipline,<br />one outcome.
+                  Answer the call.<br />Book the job.
                 </h2>
               </ScrollReveal>
               <ScrollReveal delay={100}>
@@ -315,10 +315,10 @@ const pageFromPath = pathname => {
 
             <div className="grid-cards" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px', background: 'rgba(255,255,255,0.06)', borderRadius: '14px', overflow: 'hidden', marginBottom: '100px' }}>
               {[
-                { n: '01', t: 'Workflow Automation', d: 'End-to-end automation of complex business processes that run without human intervention.' },
-                { n: '02', t: 'AI Agent Development', d: 'Autonomous agents that reason, plan, and act — from customer-facing to back-office.' },
-                { n: '03', t: 'LLM Integration', d: 'Embedding large language model intelligence into your products, platforms, and pipelines.' },
-                { n: '04', t: 'Data & Intelligence', d: 'Turning scattered data into structured operational intelligence your team can act on.' },
+                { n: '01', t: 'AI Receptionist', d: 'Answers every call, takes the job details, and keeps working while you are on site.' },
+                { n: '02', t: 'Missed-call text-back', d: 'When a call is missed, the customer gets a text and you get the details.' },
+                { n: '03', t: 'Quote & booking bots', d: 'Quotes the job and books it in, without a queue of callbacks.' },
+                { n: '04', t: 'Workflow Automation', d: 'The handoffs around the call, the quote, and the booking, running without chasing.' },
               ].map((s, i) => (
                   <HoverCard key={i} delay={i * 60} s={s} setPage={setPage} accentColor={accentColor} />
               ))}
@@ -328,9 +328,9 @@ const pageFromPath = pathname => {
             <div style={{ marginBottom: '100px' }}>
               <ScrollReveal><div className="glow-line" style={{ marginBottom: '72px' }} /></ScrollReveal>
               <div className="grid-3col" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
-                <StatCard value="100%" label="Custom-built" sub="No off-the-shelf shortcuts. Every system is purpose-engineered." delay={0} />
-                <StatCard value="24/7" label="Always running" sub="Automations that don't take weekends, sick days, or holidays." delay={80} />
-                <StatCard value="0→1" label="Full lifecycle" sub="From initial discovery through deployment and ongoing support." delay={160} />
+                <StatCard value="100%" label="Custom-built" sub="Built around how your business actually takes work. No generic call script." delay={0} />
+                <StatCard value="24/7" label="On the phone" sub="Answers when you are on a job, on site, or closed for the day." delay={80} />
+                <StatCard value="0→1" label="Full lifecycle" sub="From the first conversation through go-live and ongoing support." delay={160} />
               </div>
             </div>
 
@@ -340,7 +340,7 @@ const pageFromPath = pathname => {
                 <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '200px', height: '200px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%)' }} />
                 <div style={{ fontFamily: "'Space Mono',monospace", fontSize: '10px', color: accentColor || 'var(--accent, #00D4FF)', letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: '28px' }}>Our Belief</div>
                 <blockquote style={{ fontSize: 'clamp(22px,3vw,38px)', fontWeight: 500, letterSpacing: '-0.03em', lineHeight: 1.38, color: 'rgba(255,255,255,0.82)', maxWidth: '760px', fontStyle: 'normal' }}>
-                  "The next competitive advantage isn't headcount — it's intelligence. The businesses that understand this first will define their category."
+                  "A missed call is a missed job. The businesses that answer every time, and book the work, are the ones that keep it."
                 </blockquote>
               </div>
             </ScrollReveal>
@@ -353,7 +353,7 @@ const pageFromPath = pathname => {
               </ScrollReveal>
               <div className="grid-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
                 {[
-                  { n: '01', t: 'Discover', b: 'We spend time understanding your operations — the friction, the bottlenecks, the people involved.' },
+                  { n: '01', t: 'Discover', b: 'We learn how calls come in, how you quote, and where jobs slip away.' },
                   { n: '02', t: 'Design', b: 'We map the system architecture: inputs, outputs, decision points, and integration touchpoints.' },
                   { n: '03', t: 'Build', b: 'We engineer the automation with production-grade reliability, monitoring, and error handling.' },
                   { n: '04', t: 'Deploy & Support', b: "We go live together, then stay close. Ongoing support isn't an afterthought — it's part of the engagement." },
@@ -393,7 +393,7 @@ const pageFromPath = pathname => {
             </ScrollReveal>
             <ScrollReveal delay={180}>
               <p style={{ fontSize: 'clamp(16px,2vw,22px)', color: 'rgba(255,255,255,0.62)', lineHeight: 1.65, maxWidth: '580px', marginTop: '28px', fontWeight: 300 }}>
-                A UK-based AI automation practice built on precision, depth, and a genuine dislike of unnecessary complexity.
+                A UK practice building AI receptionists for trade and service businesses. Precise, considered, and allergic to unnecessary complexity.
               </p>
             </ScrollReveal>
           </div>
@@ -408,10 +408,10 @@ const pageFromPath = pathname => {
             </ScrollReveal>
             <ScrollReveal delay={120}>
               <p style={{ fontSize: '16px', lineHeight: 1.82, color: 'rgba(255,255,255,0.62)', marginBottom: '22px' }}>
-                We are a boutique AI automation practice based in the United Kingdom, working with founders, operators, and enterprises who understand that the next competitive advantage isn't headcount — it's intelligence.
+                We work with owners and operators across the United Kingdom who are done losing jobs to missed calls. The next advantage is not another hire. It is a receptionist that answers, quotes, books, and texts you the details.
               </p>
               <p style={{ fontSize: '16px', lineHeight: 1.82, color: 'rgba(255,255,255,0.62)' }}>
-                Our approach is precise and considered. We don't deploy technology for its own sake. Every system we build has a clear purpose: replace manual effort with automated intelligence, and give your team the time to do work that actually matters.
+                Our approach is precise and considered. We don't deploy technology for its own sake. Every system has a clear job: answer the call, capture the work, and give your team the time to do it.
               </p>
             </ScrollReveal>
           </div>
@@ -494,11 +494,14 @@ const pageFromPath = pathname => {
     // ─── SERVICES PAGE ────────────────────────────────────────────────────────
     const ServicesPage = ({ setPage }) => {
       const svcs = [
-        { num: '01', title: 'Workflow Automation', desc: "End-to-end automation of complex, multi-step business processes. We map your operations, identify maximum points of leverage, and deploy systems that run without human intervention — around the clock.", tags: ['Process mapping', 'API orchestration', 'Error handling', 'Monitoring'] },
-        { num: '02', title: 'AI Agent Development', desc: "Custom autonomous agents that reason, plan, and act. From customer-facing assistants to back-office operations agents, we build AI that makes decisions — not just predictions.", tags: ['LLM agents', 'Multi-agent systems', 'Tool use', 'Memory & context'] },
-        { num: '03', title: 'LLM Integration', desc: "Embedding large language model intelligence into your existing products, platforms, and pipelines with precision engineering. We handle the full stack so your team doesn't have to.", tags: ['RAG systems', 'Fine-tuning', 'Prompt engineering', 'Evaluation'] },
-        { num: '04', title: 'Data & Intelligence', desc: "Transforming raw, scattered data into structured operational intelligence. Pipelines, dashboards, and predictive systems that give leadership the clarity to act decisively — not retrospectively.", tags: ['Data pipelines', 'Analytics', 'Forecasting', 'Automated reporting'] },
-        { num: '05', title: 'Web Design & Development', desc: "High-performance websites and web applications built with the same precision we apply to everything else. From marketing sites to complex product interfaces — designed to convert, built to last.", tags: ['UI/UX design', 'Frontend development', 'CMS integration', 'Performance'] },
+        { num: '01', title: 'AI Receptionist', desc: "Answers every call for UK trade and service businesses. It takes the job, speaks like part of the team, and texts you the details.", tags: ['Call answering', 'Job details', 'After hours', 'Text the details'] },
+        { num: '02', title: 'Missed-call text-back', desc: "When you can't pick up, the customer still hears back. A text goes out, the enquiry is captured, and you get what they needed.", tags: ['Missed calls', 'SMS follow-up', 'Lead capture', 'Same day'] },
+        { num: '03', title: 'Quote & booking bots', desc: "Quotes the job and books it in from the conversation. Less phone tag, and a shorter gap between the enquiry and the diary.", tags: ['Quotes', 'Bookings', 'Diary', 'Confirmations'] },
+        { num: '04', title: 'Workflow Automation', desc: "End-to-end automation of complex, multi-step business processes. We map your operations, identify maximum points of leverage, and deploy systems that run without human intervention — around the clock.", tags: ['Process mapping', 'API orchestration', 'Error handling', 'Monitoring'] },
+        { num: '05', title: 'AI Agent Development', desc: "Custom autonomous agents that reason, plan, and act. From customer-facing assistants to back-office operations agents, we build AI that makes decisions — not just predictions.", tags: ['LLM agents', 'Multi-agent systems', 'Tool use', 'Memory & context'] },
+        { num: '06', title: 'LLM Integration', desc: "Embedding large language model intelligence into your existing products, platforms, and pipelines with precision engineering. We handle the full stack so your team doesn't have to.", tags: ['RAG systems', 'Fine-tuning', 'Prompt engineering', 'Evaluation'] },
+        { num: '07', title: 'Data & Intelligence', desc: "Transforming raw, scattered data into structured operational intelligence. Pipelines, dashboards, and predictive systems that give leadership the clarity to act decisively — not retrospectively.", tags: ['Data pipelines', 'Analytics', 'Forecasting', 'Automated reporting'] },
+        { num: '08', title: 'Web Design & Development', desc: "High-performance websites and web applications built with the same precision we apply to everything else. From marketing sites to complex product interfaces — designed to convert, built to last.", tags: ['UI/UX design', 'Frontend development', 'CMS integration', 'Performance'] },
       ];
 
       return (
@@ -515,7 +518,7 @@ const pageFromPath = pathname => {
               </ScrollReveal>
               <ScrollReveal delay={180}>
                 <p style={{ fontSize: 'clamp(15px,1.8vw,20px)', color: 'rgba(255,255,255,0.62)', maxWidth: '520px', marginTop: '24px', fontWeight: 300, lineHeight: 1.65 }}>
-                  We build across the full stack of modern AI — from simple process automation to complex multi-agent systems.
+                  AI receptionists, missed-call text-back, and quote and booking bots for UK trade and service businesses. Workflow automation sits underneath, for everything around the call.
                 </p>
               </ScrollReveal>
             </div>
@@ -593,7 +596,7 @@ const pageFromPath = pathname => {
             <div style={{ fontFamily: "'Space Mono',monospace", fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--accent, #00D4FF)', marginBottom: '18px' }}>Demo build</div>
             <h2 style={{ fontSize: 'clamp(26px,3vw,40px)', fontWeight: 700, letterSpacing: '-0.035em', marginBottom: '14px' }}>Swift Clear</h2>
             <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.66)', lineHeight: 1.75, maxWidth: '640px', marginBottom: '28px' }}>
-              A demo AI receptionist and quote/booking system built for a Kent waste-removal firm. This is a demonstration of the product, not a paying client engagement, so there are no results to report.
+              A demo AI receptionist and quote/booking system built for a UK waste-removal firm. This is a demonstration of the product, not a paying client engagement, so there are no results to report.
             </p>
             <a href="https://swift-clear.vercel.app" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', background: 'var(--accent, #00D4FF)', color: '#06060F', textDecoration: 'none', padding: '13px 32px', borderRadius: '8px', fontSize: '14px', fontWeight: 600, fontFamily: "'Space Grotesk',sans-serif", letterSpacing: '0.03em' }}>
               View the Swift Clear demo
@@ -668,7 +671,7 @@ const pageFromPath = pathname => {
             <div className="grid-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'start', marginBottom: '90px' }}>
               <ScrollReveal>
                 <p style={{ fontSize: '19px', lineHeight: 1.7, color: 'rgba(255,255,255,0.7)', fontWeight: 300, marginBottom: '52px' }}>
-                  Every engagement starts with a conversation. Tell us what you're working with and what you're trying to solve. We'll take it from there.
+                  Tell us how calls come in and where the jobs get lost. An AI receptionist, missed-call text-back, or booking bot for your UK business starts with that conversation.
                 </p>
                 {[['EMAIL', CONTACT_EMAIL, `mailto:${CONTACT_EMAIL}`], ['LOCATION', 'United Kingdom', null]].map(([lbl, val, href]) => (
                   <div key={lbl} style={{ marginBottom: '32px' }}>
@@ -709,7 +712,7 @@ const pageFromPath = pathname => {
                 <h2 style={{ fontSize: 'clamp(24px,3vw,42px)', fontWeight: 700, letterSpacing: '-0.035em', marginBottom: '48px' }}>Before you reach out.</h2>
               </ScrollReveal>
               {[
-                { q: "What size companies do you work with?", a: "We work with companies of all sizes — from early-stage startups with a specific process to automate, to established enterprises with complex multi-system workflows. What matters is that there's a clear problem and an appetite to solve it properly." },
+                { q: "What size companies do you work with?", a: "UK trade and service businesses of different sizes — a small firm losing jobs to missed calls, or a larger operation whose diary needs to fill itself. What matters is a clear problem and the will to fix it properly." },
                 { q: "How long does a typical project take?", a: "It depends entirely on scope. A focused single-workflow automation might take 2–4 weeks from discovery to deployment. A broader multi-system integration engagement could run 2–3 months. We'll give you a realistic timeline before we start." },
                 { q: "Do you offer ongoing support after deployment?", a: "Yes, and we think it's essential. AI systems need monitoring, tuning, and occasional updates as your business evolves. We offer ongoing support arrangements and won't disappear after the first deploy." },
                 { q: "What if we don't know exactly what we need?", a: "That's the most common starting point. A discovery call helps us understand your situation and identify the highest-leverage opportunities. You'll leave with clarity on what's possible and what we'd recommend — with no obligation." },
@@ -778,7 +781,7 @@ const pageFromPath = pathname => {
           <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr', gap: '60px', marginBottom: '64px' }}>
             <div>
               <NodusLogo onClick={() => setPage('home')} />
-              <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '14px', lineHeight: 1.75, marginTop: '20px', maxWidth: '280px' }}>AI automation systems for ambitious businesses. Precision-built in the United Kingdom.</p>
+              <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '14px', lineHeight: 1.75, marginTop: '20px', maxWidth: '280px' }}>AI receptionists for UK trade and service businesses. They answer every call, quote and book the job, and text you the details.</p>
             </div>
             <div>
               <div style={{ fontFamily: "'Space Mono',monospace", fontSize: '9px', color: 'var(--accent, #00D4FF)', letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: '22px' }}>Navigation</div>
