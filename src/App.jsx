@@ -45,11 +45,13 @@ const pageFromPath = pathname => {
         return () => clearTimeout(t);
       }, [delay]);
       const lines = text.split('\n');
+      const label = text.replace(/\n/g, ' ');
       let idx = 0;
       return (
-        <Tag className={className} style={style}>
+        <Tag className={className} style={{ position: 'relative', ...style }} aria-label={label}>
+          <span className="sr-only">{label}</span>
           {lines.map((line, li) => (
-            <div key={li} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <div key={li} aria-hidden="true" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {line.split('').map((ch, ci) => {
                 const i = idx++;
                 return (
@@ -385,9 +387,9 @@ const pageFromPath = pathname => {
           <div style={{ maxWidth: '1160px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
             <ScrollReveal><Label>About NODUS</Label></ScrollReveal>
             <ScrollReveal delay={80}>
-              <h2 style={{ fontSize: 'clamp(36px,6vw,78px)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.06, maxWidth: '780px' }}>
+              <h1 style={{ fontSize: 'clamp(36px,6vw,78px)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.06, maxWidth: '780px' }}>
                 We find the critical<br /><span style={{ color: 'var(--accent, #00D4FF)' }}>nodes</span> in your business.
-              </h2>
+              </h1>
             </ScrollReveal>
             <ScrollReveal delay={180}>
               <p style={{ fontSize: 'clamp(16px,2vw,22px)', color: 'rgba(255,255,255,0.62)', lineHeight: 1.65, maxWidth: '580px', marginTop: '28px', fontWeight: 300 }}>
@@ -507,9 +509,9 @@ const pageFromPath = pathname => {
             <div style={{ maxWidth: '1160px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
               <ScrollReveal><Label>What We Build</Label></ScrollReveal>
               <ScrollReveal delay={80}>
-                <h2 style={{ fontSize: 'clamp(36px,6vw,78px)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.06, maxWidth: '680px' }}>
+                <h1 style={{ fontSize: 'clamp(36px,6vw,78px)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.06, maxWidth: '680px' }}>
                   Systems that work<br />while you sleep.
-                </h2>
+                </h1>
               </ScrollReveal>
               <ScrollReveal delay={180}>
                 <p style={{ fontSize: 'clamp(15px,1.8vw,20px)', color: 'rgba(255,255,255,0.62)', maxWidth: '520px', marginTop: '24px', fontWeight: 300, lineHeight: 1.65 }}>
@@ -577,7 +579,7 @@ const pageFromPath = pathname => {
           <div style={{ maxWidth: '1160px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
             <ScrollReveal><Label>Selected Work</Label></ScrollReveal>
             <ScrollReveal delay={80}>
-              <h2 style={{ fontSize: 'clamp(36px,6vw,78px)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.06 }}>Case studies.</h2>
+              <h1 style={{ fontSize: 'clamp(36px,6vw,78px)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.06 }}>Case studies.</h1>
             </ScrollReveal>
             <ScrollReveal delay={180}>
               <p style={{ fontSize: 'clamp(15px,1.8vw,20px)', color: 'rgba(255,255,255,0.62)', maxWidth: '500px', marginTop: '22px', fontWeight: 300, lineHeight: 1.65 }}>
@@ -587,19 +589,20 @@ const pageFromPath = pathname => {
           </div>
         </div>
         <Section>
-          {/* TODO(Kostas): replace with real case studies (e.g. Swift Clear demo). Placeholder grid removed. */}
+          <article className="box-pad" style={{ marginBottom: '28px', padding: '44px', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.02)' }}>
+            <div style={{ fontFamily: "'Space Mono',monospace", fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--accent, #00D4FF)', marginBottom: '18px' }}>Demo build</div>
+            <h2 style={{ fontSize: 'clamp(26px,3vw,40px)', fontWeight: 700, letterSpacing: '-0.035em', marginBottom: '14px' }}>Swift Clear</h2>
+            <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.66)', lineHeight: 1.75, maxWidth: '640px', marginBottom: '28px' }}>
+              A demo AI receptionist and quote/booking system built for a Kent waste-removal firm. This is a demonstration of the product, not a paying client engagement, so there are no results to report.
+            </p>
+            <a href="https://swift-clear.vercel.app" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', background: 'var(--accent, #00D4FF)', color: '#06060F', textDecoration: 'none', padding: '13px 32px', borderRadius: '8px', fontSize: '14px', fontWeight: 600, fontFamily: "'Space Grotesk',sans-serif", letterSpacing: '0.03em' }}>
+              View the Swift Clear demo
+            </a>
+          </article>
           <div style={{ padding: '52px 40px', borderRadius: '14px', border: '1px solid rgba(0,212,255,0.14)', background: 'rgba(0,212,255,0.03)', textAlign: 'center' }}>
             <h3 style={{ fontSize: 'clamp(20px,2.4vw,28px)', fontWeight: 600, letterSpacing: '-0.03em', marginBottom: '12px' }}>Want to see a live demo?</h3>
             <p style={{ color: 'rgba(255,255,255,0.64)', marginBottom: '28px', fontSize: '15px', lineHeight: 1.65 }}>We'll walk you through a working system built for a business like yours.</p>
             <BtnPrimary onClick={() => setPage('contact')}>Book a Demo</BtnPrimary>
-          </div>
-          <div hidden className="grid-2work" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px', background: 'rgba(255,255,255,0.04)', borderRadius: '14px', overflow: 'hidden' }}>
-            {[0, 1, 2, 3].map(i => (
-              <div key={i} className="liquid-glass" style={{ aspectRatio: '4/3', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '12px', borderRadius: 0 }}>
-                <div style={{ width: '32px', height: '1px', background: 'rgba(0,212,255,0.22)' }} />
-                <span style={{ fontFamily: "'Space Mono',monospace", fontSize: '9px', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.2em', textTransform: 'uppercase' }}>Coming Soon</span>
-              </div>
-            ))}
           </div>
         </Section>
       </div>
@@ -656,7 +659,7 @@ const pageFromPath = pathname => {
             <div style={{ maxWidth: '1160px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
               <ScrollReveal><Label>Get in Touch</Label></ScrollReveal>
               <ScrollReveal delay={80}>
-                <h2 style={{ fontSize: 'clamp(36px,6vw,78px)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.06 }}>Let's talk.</h2>
+                <h1 style={{ fontSize: 'clamp(36px,6vw,78px)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.06 }}>Let's talk.</h1>
               </ScrollReveal>
             </div>
           </div>
